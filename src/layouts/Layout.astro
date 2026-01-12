@@ -1,0 +1,37 @@
+---
+import { getRelativeLocaleUrl } from "astro:i18n";
+import '../styles/global.css';
+
+interface Props {
+	title: string;
+	description?: string;
+	lang: string;
+}
+
+const { title, description, lang } = Astro.props;
+
+const locales = ['nl', 'en', 'de'];
+---
+
+<!doctype html>
+<html lang={lang}>
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta name="generator" content={Astro.generator} />
+		<title>{title}</title>
+		{description && <meta name="description" content={description} />}
+		
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&family=Caveat:wght@400..700&display=swap" rel="stylesheet">
+		
+		{locales.map((locale) => (
+			<link rel="alternate" hreflang={locale} href={getRelativeLocaleUrl(locale, '/')} />
+		))}
+	</head>
+	<body class="bg-sand text-slate font-sans">
+		<slot />
+	</body>
+</html>

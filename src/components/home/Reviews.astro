@@ -1,0 +1,44 @@
+---
+import { Star } from 'lucide-react';
+
+interface Review {
+  name: string;
+  date: string;
+  text: string;
+  rating: number;
+}
+
+interface Props {
+  data: {
+    title: string;
+    items: Review[];
+  };
+}
+
+const { data } = Astro.props;
+---
+
+<section class="py-24 bg-white">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-16">
+      <h2 class="text-3xl md:text-5xl font-heading font-black text-brand-green mb-6">{data.title}</h2>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      {data.items.map((review) => (
+        <div class="bg-brand-light p-8 rounded-2xl relative shadow-sm border border-brand-clay/20">
+          <div class="flex gap-1 mb-4 text-brand-green">
+            {Array.from({ length: review.rating }).map(() => (
+              <Star className="w-5 h-5 fill-current" />
+            ))}
+          </div>
+          <p class="text-brand-dark/80 italic mb-6 leading-relaxed">"{review.text}"</p>
+          <div class="mt-auto">
+            <p class="font-bold text-brand-dark font-heading">{review.name}</p>
+            <p class="text-sm text-brand-clay/80">{review.date}</p>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

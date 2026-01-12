@@ -1,0 +1,31 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../layouts/Layout.astro';
+import Navbar from '../components/common/Navbar.astro';
+import Footer from '../components/common/Footer.astro';
+import Hero from '../components/home/Hero.astro';
+import About from '../components/home/About.astro';
+import Features from '../components/home/Features.astro';
+import Location from '../components/home/Location.astro';
+
+// Fetch Dutch content explicitly for the root
+const pages = await getCollection('site');
+const page = pages.find(p => p.slug === 'nl/home');
+
+if (!page) {
+  throw new Error('Default content (nl/home) not found');
+}
+
+const { data } = page;
+---
+
+<Layout title={data.title} description={data.description} lang="nl">
+	<Navbar />
+	<main>
+		<Hero data={data.hero} />
+		<About data={data.about} />
+		<Features data={data.features} />
+		<Location data={data.location} />
+	</main>
+	<Footer />
+</Layout>

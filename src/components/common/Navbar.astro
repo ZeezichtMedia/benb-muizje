@@ -1,0 +1,82 @@
+---
+import Button from './Button.astro';
+import LanguagePicker from './LanguagePicker.astro';
+import { getRelativeLocaleUrl } from "astro:i18n";
+import { useTranslations } from '../../i18n/ui';
+
+const { lang } = Astro.params;
+const currentLang = (lang as 'nl' | 'en' | 'de') || 'nl';
+const t = useTranslations(currentLang);
+
+const links = [
+  { name: t('nav.home'), href: getRelativeLocaleUrl(currentLang, '/') },
+  { name: t('nav.accommodation'), href: getRelativeLocaleUrl(currentLang, 'accommodatie') },
+  { name: t('nav.surroundings'), href: getRelativeLocaleUrl(currentLang, 'omgeving') },
+  { name: t('nav.gallery'), href: getRelativeLocaleUrl(currentLang, 'gallerij') },
+  { name: t('nav.contact'), href: getRelativeLocaleUrl(currentLang, 'contact') },
+  // Booking link visible in mobile menu or desktop list if needed, or just rely on the button
+];
+---
+
+<nav class="fixed top-0 w-full z-50 bg-white/90 backdrop-blur-md border-b border-brand-clay/20 shadow-sm">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex justify-between items-center h-24">
+      <!-- Logo -->
+      <div class="flex-shrink-0 flex items-center">
+        <a href={getRelativeLocaleUrl(currentLang, '/')} class="text-3xl font-heading font-black text-brand-green tracking-tight hover:opacity-80 transition-opacity">
+          my MuiZje
+        </a>
+      </div>
+
+      <!-- Desktop Menu -->
+      <div class="hidden md:flex items-center space-x-8">
+        {links.map((link) => (
+          <a href={link.href} class="text-brand-dark font-medium hover:text-brand-green transition-colors font-heading text-lg">
+            {link.name}
+          </a>
+        ))}
+        <Button href={getRelativeLocaleUrl(currentLang, 'boeken')} variant="primary" class="!bg-brand-green hover:!bg-brand-dark !text-white !font-bold !rounded-full !px-8 !py-3 !shadow-lg">
+          {t('btn.book')}
+        </Button>
+        <LanguagePicker />
+      </div>
+
+      <!-- Mobile Menu Button -->
+      <div class="md:hidden flex items-center gap-4">
+        <LanguagePicker />
+        <button id="mobile-menu-btn" class="text-brand-dark hover:text-brand-green focus:outline-none">
+          <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mobile Menu -->
+  <div id="mobile-menu" class="hidden md:hidden bg-white border-b border-brand-clay/20">
+    <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+      {links.map((link) => (
+        <a href={link.href} class="block px-3 py-2 text-base font-medium text-brand-dark hover:text-brand-green hover:bg-brand-light rounded-md">
+          {link.name}
+        </a>
+      ))}
+      <div class="pt-4 pb-2">
+        <Button href={getRelativeLocaleUrl(currentLang, 'boeken')} variant="primary" class="w-full justify-center !bg-brand-green text-white">
+          {t('btn.book')}
+        </Button>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<script>
+  const btn = document.getElementById('mobile-menu-btn');
+  const menu = document.getElementById('mobile-menu');
+
+  if (btn && menu) {
+    btn.addEventListener('click', () => {
+      menu.classList.toggle('hidden');
+    });
+  }
+</script>

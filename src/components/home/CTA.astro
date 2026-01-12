@@ -1,0 +1,26 @@
+---
+import { useTranslations } from '../../i18n/ui';
+import { getRelativeLocaleUrl } from "astro:i18n";
+import Button from '../common/Button.astro';
+
+const props = Astro.props;
+const currentLang = Astro.currentLocale || 'nl';
+const t = useTranslations(currentLang as any);
+---
+
+<section class="py-24 bg-brand-light border-t border-brand-clay/20">
+  <div class="max-w-4xl mx-auto px-4 text-center">
+    <h2 class="text-3xl md:text-5xl font-heading font-black text-brand-green mb-6">Klaar voor een ontspannen vakantie?</h2>
+    <p class="text-xl text-brand-dark/70 mb-10 max-w-2xl mx-auto">
+      Boek nu uw verblijf in my MuiZje en geniet van zon, zee en strand in Renesse.
+    </p>
+    <div class="flex flex-col sm:flex-row gap-4 justify-center">
+      <Button href={getRelativeLocaleUrl(currentLang, 'boeken')} variant="primary" class="!bg-brand-green hover:!bg-brand-dark !text-white !px-10 !py-4 shadow-xl transform hover:scale-105 transition-all text-lg">
+        {t('btn.book')}
+      </Button>
+      <Button href={getRelativeLocaleUrl(currentLang, 'contact')} variant="outline" class="!text-brand-green !border-brand-green hover:!bg-brand-green hover:!text-white !px-10 !py-4 text-lg">
+        {t('nav.contact')}
+      </Button>
+    </div>
+  </div>
+</section>

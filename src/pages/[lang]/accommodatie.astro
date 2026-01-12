@@ -1,0 +1,78 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+import Navbar from '../../components/common/Navbar.astro';
+import Footer from '../../components/common/Footer.astro';
+import Features from '../../components/home/Features.astro';
+import MasonryGallery from '../../components/common/MasonryGallery.astro';
+import Rates from '../../components/stay/Rates.astro';
+
+import { useTranslations } from '../../i18n/ui';
+
+export async function getStaticPaths() {
+  const pages = await getCollection('site');
+  
+  const paths = pages
+    .filter(page => {
+       const slug = page.slug.split('/')[1];
+       return ['accommodatie', 'accommodation', 'unterkunft'].includes(slug!);
+    })
+    .map(page => {
+      const [lang] = page.slug.split('/');
+      return { params: { lang }, props: { page } };
+    });
+
+  return paths;
+}
+
+const { lang } = Astro.params;
+const { page } = Astro.props;
+const { data } = page;
+const currentLang = (lang as 'nl' | 'en' | 'de') || 'nl';
+const t = useTranslations(currentLang);
+---
+
+<Layout title={data.title} description={data.description} lang={currentLang}>
+  <Navbar />
+  <main class="pt-24 md:pt-36 bg-brand-light min-h-screen">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        
+        <!-- Collage Hero -->
+        <div class="grid lg:grid-cols-2 gap-12 mb-20 items-center">
+            <div class="order-1">
+                 <h1 class="text-4xl md:text-6xl font-heading font-black text-brand-green mb-6 leading-tight animate-slide-up">
+                    <span class="font-['Caveat'] text-4xl kv:text-5xl text-brand-green/70 block mb-2">{t('hero.accommodation.subtitle')}</span>
+                    {data.title}
+                 </h1>
+                 <p class="text-lg text-brand-dark/80 font-medium leading-relaxed mb-8 animate-slide-up delay-100 max-w-xl">
+                    {data.description}
+                 </p>
+            </div>
+            <div class="order-2 grid grid-cols-2 gap-4 animate-fade-in">
+                 <div class="col-span-2 relative h-64 rounded-2xl overflow-hidden shadow-lg group">
+                     <img src="/images/kitchen.jpg" alt="Keuken" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+                     <div class="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors"></div>
+                 </div>
+                 <div class="relative h-48 rounded-2xl overflow-hidden shadow-lg group">
+                     <img src="/images/bedroom-1.jpg" alt="Slaapkamer" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+                 </div>
+                 <div class="relative h-48 rounded-2xl overflow-hidden shadow-lg group">
+                     <img src="/images/terrace.jpg" alt="Terras" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+                 </div>
+            </div>
+        </div>
+        
+        {data.features && <div class="animate-slide-up delay-200"><Features data={data.features} /></div>}
+
+        {data.rates && <div class="animate-slide-up delay-300"><Rates data={data.rates} /></div>}
+        
+        {data.gallery && (
+          <div class="mt-16 animate-slide-up delay-300">
+            <h2 class="text-3xl font-heading font-bold text-brand-green mb-8">Een kijkje binnen</h2>
+            <MasonryGallery images={data.gallery} />
+          </div>
+        )}
+    </div>
+  </main>
+  <Footer />
+</Layout>

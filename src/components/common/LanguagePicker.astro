@@ -1,0 +1,43 @@
+---
+import { getRelativeLocaleUrl } from "astro:i18n";
+
+const { lang } = Astro.params;
+const currentLang = lang || 'nl';
+
+const languages = {
+  nl: 'NL',
+  en: 'EN',
+  de: 'DE',
+};
+---
+
+<div class="relative group ml-4 z-50">
+  <button class="flex items-center space-x-1 text-brand-green hover:text-brand-dark font-bold focus:outline-none bg-brand-light/50 px-3 py-2 rounded-full transition-colors">
+    <span>{languages[currentLang as keyof typeof languages]}</span>
+    <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+  </button>
+  <div class="absolute right-0 mt-2 w-24 bg-white rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 border border-brand-clay/20">
+    <div class="py-1">
+    <div class="py-1">
+      {Object.entries(languages).map(([code, label]) => {
+        // Calculate the path relative to the current locale
+        const pathname = Astro.url.pathname;
+        const segments = pathname.split('/').filter(Boolean);
+        // If the first segment is a locale, remove it
+        const path = (segments.length > 0 && ['nl', 'en', 'de'].includes(segments[0])) 
+            ? segments.slice(1).join('/') 
+            : segments.join('/');
+            
+        return (
+            <a 
+              href={getRelativeLocaleUrl(code, path)} 
+              class={`block px-4 py-2 text-sm hover:bg-brand-light hover:text-brand-green ${currentLang === code ? 'font-bold text-brand-green' : 'text-brand-dark'}`}
+            >
+              {label}
+            </a>
+        );
+      })}
+    </div>
+    </div>
+  </div>
+</div>

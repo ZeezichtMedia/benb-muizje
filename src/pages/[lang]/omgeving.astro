@@ -1,0 +1,72 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+import Navbar from '../../components/common/Navbar.astro';
+import Footer from '../../components/common/Footer.astro';
+import Location from '../../components/home/Location.astro';
+
+import { useTranslations } from '../../i18n/ui';
+
+export async function getStaticPaths() {
+  const pages = await getCollection('site');
+  
+  const paths = pages
+    .filter(page => {
+       const slug = page.slug.split('/')[1];
+       return ['omgeving', 'surroundings', 'umgebung'].includes(slug!);
+    })
+    .map(page => {
+      const [lang] = page.slug.split('/');
+      return { params: { lang }, props: { page } };
+    });
+
+  return paths;
+}
+
+const { lang } = Astro.params;
+const { page } = Astro.props;
+const { data } = page;
+const currentLang = (lang as 'nl' | 'en' | 'de') || 'nl';
+const t = useTranslations(currentLang);
+---
+
+<Layout title={data.title} description={data.description} lang={currentLang}>
+  <Navbar />
+  <main class="pt-24 md:pt-36 bg-brand-light min-h-screen">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <!-- Collage Hero -->
+        <!-- Collage Hero: Mirrored Layout for Variety -->
+        <div class="grid lg:grid-cols-2 gap-12 mb-20 items-center">
+            <!-- Images Left on Desktop, Bottom on Mobile -->
+            <div class="order-2 lg:order-1 grid grid-cols-2 gap-4 animate-fade-in">
+                 <div class="col-span-2 relative h-64 rounded-2xl overflow-hidden shadow-lg group">
+                     <img src="/images/beach.jpg" alt="Strand Renesse" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+                     <div class="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors"></div>
+                 </div>
+                 <div class="relative h-48 rounded-2xl overflow-hidden shadow-lg group">
+                     <img src="/images/surroundings.jpg" alt="Natuur" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+                 </div>
+                 <div class="relative h-48 rounded-2xl overflow-hidden shadow-lg group">
+                     <img src="/images/terrace.jpg" alt="Centrum" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+                 </div>
+            </div>
+
+            <!-- Text Right on Desktop, Top on Mobile -->
+            <div class="order-1 lg:order-2 text-right">
+                 <h1 class="text-4xl md:text-6xl font-heading font-black text-brand-green mb-6 leading-tight animate-slide-up">
+                    <span class="font-['Caveat'] text-4xl kv:text-5xl text-brand-green/70 block mb-2 origin-top-right rotate-2">{t('hero.surroundings.subtitle')}</span>
+                    {data.title}
+                 </h1>
+                 <p class="text-lg text-brand-dark/80 font-medium leading-relaxed mb-8 animate-slide-up delay-100 max-w-xl ml-auto">
+                    {data.description}
+                 </p>
+                 <!-- Decorative element -->
+                 <div class="w-24 h-2 bg-brand-clay/30 rounded-full ml-auto animate-slide-up delay-200"></div>
+            </div>
+        </div>
+        
+        {data.location && <div class="animate-slide-up delay-200"><Location data={data.location} /></div>}
+    </div>
+  </main>
+  <Footer />
+</Layout>

@@ -1,0 +1,66 @@
+@import "tailwindcss";
+
+@theme {
+    /* Colors */
+    --color-brand-green: #2C5530;
+    --color-brand-clay: #E5D0C3;
+    --color-brand-dark: #1F2937;
+    --color-brand-light: #F9F5F3;
+
+    /* Fonts */
+    --font-heading: 'Outfit', sans-serif;
+    --font-body: 'Inter', sans-serif;
+}
+
+@layer base {
+    body {
+        @apply font-body text-brand-dark bg-brand-light antialiased;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+        @apply font-heading font-bold text-brand-green;
+    }
+}
+
+@layer utilities {
+    .animate-slide-up {
+        animation: slideUp 0.8s ease-out forwards;
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    .animate-fade-in {
+        animation: fadeIn 1s ease-out forwards;
+        opacity: 0;
+    }
+
+    .delay-100 {
+        animation-delay: 100ms;
+    }
+
+    .delay-200 {
+        animation-delay: 200ms;
+    }
+
+    .delay-300 {
+        animation-delay: 300ms;
+    }
+
+    @keyframes slideUp {
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @keyframes fadeIn {
+        to {
+            opacity: 1;
+        }
+    }
+}

@@ -1,0 +1,107 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Navbar from '../../components/common/Navbar.astro';
+import Footer from '../../components/common/Footer.astro';
+import { useTranslations } from '../../i18n/ui';
+import { getRelativeLocaleUrl } from "astro:i18n";
+
+export function getStaticPaths() {
+  const languages = ['nl', 'en', 'de'];
+  return languages.map((lang) => ({ params: { lang } }));
+}
+
+const { lang } = Astro.params;
+const currentLang = (lang as 'nl' | 'en' | 'de') || 'nl';
+const t = useTranslations(currentLang);
+
+const content = {
+  nl: { title: "Reserveren", intro: "Kies uw data en stel uw ideale verblijf samen." },
+  en: { title: "Booking", intro: "Select dates and customize your stay." },
+  de: { title: "Buchen", intro: "Wählen Sie Ihre Daten und gestalten Sie Ihren Aufenthalt." }
+};
+
+const c = content[currentLang];
+---
+
+<Layout title={`my MuiZje | ${c.title}`} lang={currentLang}>
+  <Navbar />
+  <div class="pt-24 md:pt-36 pb-12 bg-brand-light min-h-screen">
+    <div class="max-w-7xl mx-auto px-6">
+        <!-- Header -->
+        <div class="text-center max-w-3xl mx-auto mb-16">
+            <h1 class="text-4xl md:text-5xl font-heading font-black text-brand-green mb-6 animate-slide-up">{c.title}</h1>
+            <p class="text-lg text-brand-dark/70 leading-relaxed animate-slide-up delay-100">{c.intro}</p>
+        </div>
+
+        <div class="grid lg:grid-cols-2 gap-12 items-start max-w-6xl mx-auto">
+            <!-- Booking Form -->
+            <div class="bg-white p-8 md:p-10 rounded-3xl shadow-xl border border-brand-clay/20 animate-slide-up delay-200">
+                <form name="booking" method="POST" data-netlify="true" class="space-y-6">
+                    
+                    <!-- Dates -->
+                    <div class="grid grid-cols-2 gap-6">
+                        <div class="space-y-2">
+                            <label for="checkin" class="block text-sm font-bold text-brand-dark">{t('form.checkin')}</label>
+                            <input type="date" id="checkin" name="checkin" required class="w-full px-4 py-3 rounded-lg bg-brand-light border-transparent focus:border-brand-green focus:bg-white focus:ring-0 transition-colors" />
+                        </div>
+                        <div class="space-y-2">
+                            <label for="checkout" class="block text-sm font-bold text-brand-dark">{t('form.checkout')}</label>
+                            <input type="date" id="checkout" name="checkout" required class="w-full px-4 py-3 rounded-lg bg-brand-light border-transparent focus:border-brand-green focus:bg-white focus:ring-0 transition-colors" />
+                        </div>
+                    </div>
+
+                    <!-- Guests -->
+                    <div class="space-y-2">
+                         <label for="guests" class="block text-sm font-bold text-brand-dark">{t('form.guests')}</label>
+                         <select id="guests" name="guests" class="w-full px-4 py-3 rounded-lg bg-brand-light border-transparent focus:border-brand-green focus:bg-white focus:ring-0 transition-colors">
+                             <option value="1">1 Persoon</option>
+                             <option value="2" selected>2 Personen</option>
+                             <option value="3">3 Personen</option>
+                             <option value="4">4 Personen</option>
+                         </select>
+                    </div>
+
+                    <!-- Extras -->
+                    <div class="bg-brand-green/5 p-6 rounded-xl border border-brand-green/10">
+                        <label class="flex items-center gap-3 cursor-pointer group">
+                             <input type="checkbox" name="breakfast" value="yes" class="w-5 h-5 text-brand-green rounded border-brand-clay focus:ring-brand-green" />
+                             <span class="text-brand-dark font-medium group-hover:text-brand-green transition-colors">{t('form.extra.breakfast')}</span>
+                        </label>
+                    </div>
+
+                    <!-- Personal Details -->
+                    <div class="space-y-4">
+                        <input type="text" name="name" placeholder={t('form.name')} required class="w-full px-4 py-3 rounded-lg bg-brand-light border-transparent focus:border-brand-green focus:bg-white focus:ring-0 transition-colors" />
+                        <input type="email" name="email" placeholder={t('form.email')} required class="w-full px-4 py-3 rounded-lg bg-brand-light border-transparent focus:border-brand-green focus:bg-white focus:ring-0 transition-colors" />
+                        <textarea name="remarks" rows="3" placeholder={t('form.remarks')} class="w-full px-4 py-3 rounded-lg bg-brand-light border-transparent focus:border-brand-green focus:bg-white focus:ring-0 transition-colors"></textarea>
+                    </div>
+
+                    <button type="submit" class="w-full bg-brand-green text-white font-bold text-lg py-4 rounded-full shadow-lg hover:bg-brand-dark hover:scale-[1.02] active:scale-95 transition-all duration-300">
+                        {t('form.send')}
+                    </button>
+                </form>
+            </div>
+
+            <!-- Side Content (Image / Info) -->
+            <div class="space-y-8 animate-slide-up delay-300 hidden lg:block">
+                <div class="relative rounded-3xl overflow-hidden shadow-2xl h-[400px]">
+                    <img src="/images/bedroom-1.jpg" alt="Bedroom Preview" class="w-full h-full object-cover" />
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end p-8">
+                        <p class="text-white font-heading font-bold text-2xl">Start de dag goed.</p>
+                    </div>
+                </div>
+
+                <div class="bg-white p-8 rounded-3xl shadow-lg border border-brand-clay/20">
+                    <h3 class="text-xl font-bold text-brand-green mb-4">Waarom rechtstreeks boeken?</h3>
+                    <ul class="space-y-3 text-brand-dark/80">
+                        <li class="flex items-center gap-2">✓ Beste prijsgarantie</li>
+                        <li class="flex items-center gap-2">✓ Direct contact met de eigenaren</li>
+                        <li class="flex items-center gap-2">✓ Flexibele voorwaarden</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+  </div>
+  <Footer />
+</Layout>

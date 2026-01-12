@@ -1,0 +1,114 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+import Navbar from '../../components/common/Navbar.astro';
+import Footer from '../../components/common/Footer.astro';
+import { MapPin, Phone, Mail } from 'lucide-react';
+import { useTranslations } from '../../i18n/ui';
+
+export async function getStaticPaths() {
+  const pages = await getCollection('site');
+  
+  const paths = pages
+    .filter(page => {
+       const slug = page.slug.split('/')[1];
+       return ['contact', 'kontakt'].includes(slug!);
+    })
+    .map(page => {
+      const [lang] = page.slug.split('/');
+      return { params: { lang }, props: { page } };
+    });
+
+  return paths;
+}
+
+const { lang } = Astro.params;
+const { page } = Astro.props;
+const { data } = page;
+const currentLang = (lang as 'nl' | 'en' | 'de') || 'nl';
+const t = useTranslations(currentLang);
+---
+
+<Layout title={data.title} description={data.description} lang={currentLang}>
+  <Navbar />
+  <div class="pt-24 md:pt-36 pb-12 bg-brand-light min-h-screen">
+    <div class="max-w-7xl mx-auto px-6">
+       <!-- Collage Hero -->
+       <!-- Split Hero: Single Image + Text -->
+       <div class="grid lg:grid-cols-2 gap-12 mb-20 items-center">
+            <div class="order-2 lg:order-1">
+                 <h1 class="text-4xl md:text-6xl font-heading font-black text-brand-green mb-6 leading-tight animate-slide-up">
+                    <span class="font-['Caveat'] text-4xl kv:text-5xl text-brand-green/70 block mb-2">{t('hero.contact.subtitle')}</span>
+                    {data.title}
+                 </h1>
+                 <p class="text-lg text-brand-dark/80 font-medium leading-relaxed mb-8 animate-slide-up delay-100 max-w-xl">
+                    {data.description}
+                 </p>
+                 <div class="flex gap-4">
+                    <div class="p-3 bg-brand-green/10 rounded-full text-brand-green animate-bounce delay-700">
+                        <Mail className="w-6 h-6" />
+                    </div>
+                 </div>
+            </div>
+            
+            <div class="order-1 lg:order-2 animate-fade-in relative">
+                 <div class="relative h-[400px] rounded-3xl overflow-hidden shadow-2xl rotate-2 hover:rotate-0 transition-all duration-500">
+                     <img src="/images/home-hero.jpg" alt="My MuiZje Exterieur" class="w-full h-full object-cover" />
+                 </div>
+                 <!-- Decorative blob behind -->
+                 <div class="absolute -bottom-10 -left-10 w-40 h-40 bg-brand-clay/20 rounded-full blur-2xl -z-10"></div>
+            </div>
+        </div>
+
+       <div class="grid lg:grid-cols-2 gap-12">
+          <!-- Contact Info & Map -->
+          <div class="space-y-8 animate-slide-up delay-200">
+             <div class="bg-white p-8 rounded-2xl shadow-sm border border-brand-clay/20">
+                <h3 class="text-2xl font-heading font-bold mb-6 text-brand-green">Gegevens</h3>
+                <div class="space-y-4">
+                    <div class="flex items-center gap-4 text-brand-dark/80">
+                        <div class="w-10 h-10 bg-brand-light rounded-full flex items-center justify-center text-brand-green">
+                            <MapPin className="w-5 h-5" />
+                        </div>
+                        <span>Camping de Horizon 69, 4325 HZ Renesse</span>
+                    </div>
+                    <div class="flex items-center gap-4 text-brand-dark/80">
+                         <div class="w-10 h-10 bg-brand-light rounded-full flex items-center justify-center text-brand-green">
+                            <Mail className="w-5 h-5" />
+                        </div>
+                        <a href="mailto:mymuizje@muizert.eu" class="hover:text-brand-green transition-colors">mymuizje@muizert.eu</a>
+                    </div>
+                </div>
+             </div>
+
+             <div class="h-[300px] rounded-2xl overflow-hidden shadow-lg border border-white/20">
+                <iframe 
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2478.678738605021!2d3.7667!3d51.7333!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNTHCsDQ0JzAwLjAiTiAzwrQ0NicwMC4wIkU!5e0!3m2!1snl!2snl!4v1625648500000!5m2!1snl!2snl" 
+                    width="100%" 
+                    height="100%" 
+                    style="border:0;" 
+                    allowfullscreen="" 
+                    loading="lazy"
+                ></iframe>
+             </div>
+          </div>
+
+          <!-- Form -->
+          <div class="bg-white p-8 md:p-10 rounded-3xl shadow-xl border border-brand-clay/20 animate-slide-up delay-300 h-full">
+                <h3 class="text-2xl font-heading font-bold mb-6 text-brand-green">Stuur ons een bericht</h3>
+                <form name="contact" method="POST" data-netlify="true" class="space-y-6">
+                    <div class="space-y-4">
+                        <input type="text" name="name" placeholder={t('form.name')} required class="w-full px-4 py-3 rounded-lg bg-brand-light border-transparent focus:border-brand-green focus:bg-white focus:ring-0 transition-colors" />
+                        <input type="email" name="email" placeholder={t('form.email')} required class="w-full px-4 py-3 rounded-lg bg-brand-light border-transparent focus:border-brand-green focus:bg-white focus:ring-0 transition-colors" />
+                        <textarea name="message" rows="5" placeholder={t('form.message')} required class="w-full px-4 py-3 rounded-lg bg-brand-light border-transparent focus:border-brand-green focus:bg-white focus:ring-0 transition-colors"></textarea>
+                    </div>
+                    <button type="submit" class="w-full bg-brand-green text-white font-bold text-lg py-4 rounded-full shadow-lg hover:bg-brand-dark hover:scale-[1.02] active:scale-95 transition-all duration-300">
+                        {t('form.send')}
+                    </button>
+                </form>
+            </div>
+       </div>
+    </div>
+  </div>
+  <Footer />
+</Layout>

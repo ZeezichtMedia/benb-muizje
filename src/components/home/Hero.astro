@@ -1,0 +1,81 @@
+---
+import { getRelativeLocaleUrl } from "astro:i18n";
+import Button from '../common/Button.astro';
+
+interface Props {
+  data: {
+    title: string;
+    subtitle: string;
+    image?: string;
+    ctaPrimary: string;
+    ctaSecondary: string;
+  };
+}
+
+const { data } = Astro.props;
+const currentLang = Astro.currentLocale || 'nl';
+const bgImage = data.image || '/images/hero.jpg';
+---
+
+<section class="relative pt-32 pb-16 md:py-32 lg:py-40 bg-gradient-to-br from-brand-light via-white to-brand-clay/10 overflow-hidden">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+      
+      <!-- Text Content -->
+      <div class="relative z-10 text-center lg:text-left order-2 lg:order-1">
+        <h1 class="text-4xl md:text-6xl lg:text-7xl font-heading font-black text-brand-green mb-6 leading-tight animate-slide-up">
+            <span class="font-['Caveat'] text-5xl md:text-7xl lg:text-8xl text-brand-green/80 block mb-2 -rotate-2 origin-bottom-left">Aan zee...</span>
+            bij my MuiZje
+        </h1>
+        <p class="text-lg md:text-xl text-brand-dark/80 mb-8 font-medium max-w-2xl mx-auto lg:mx-0 leading-relaxed animate-slide-up delay-100">
+            {data.subtitle}
+        </p>
+        
+        <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start animate-slide-up delay-200">
+          <Button 
+            href={getRelativeLocaleUrl(currentLang, 'boeken')} 
+            variant="primary" 
+            class="!bg-brand-green hover:!bg-brand-dark !text-white !font-bold !px-8 !py-4 shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all w-full sm:w-auto justify-center text-lg hidden sm:inline-flex"
+          >
+            {data.ctaPrimary}
+          </Button>
+           <!-- Mobile only booking button -->
+          <Button 
+            href={getRelativeLocaleUrl(currentLang, 'boeken')} 
+            variant="primary" 
+            class="!bg-brand-green hover:!bg-brand-dark !text-white !font-bold !px-8 !py-4 shadow-lg w-full justify-center text-lg sm:hidden"
+          >
+            {data.ctaPrimary}
+          </Button>
+
+          <Button 
+            href={getRelativeLocaleUrl(currentLang, 'accommodatie')} 
+            variant="outline" 
+            class="!border-2 !border-brand-green !text-brand-green hover:!bg-brand-green hover:!text-white !font-bold !px-8 !py-4 w-full sm:w-auto justify-center text-lg"
+          >
+            {data.ctaSecondary}
+          </Button>
+        </div>
+      </div>
+
+      <!-- Image -->
+      <div class="relative order-1 lg:order-2 animate-fade-in">
+        <div class="relative rounded-3xl overflow-hidden shadow-2xl aspect-[4/3] transform lg:rotate-2 hover:rotate-0 transition-transform duration-700 ease-out">
+            <img 
+              src={bgImage} 
+              alt="My MuiZje Exterieur" 
+              class="w-full h-full object-cover"
+              loading="eager"
+            />
+            <!-- Shine effect -->
+            <div class="absolute inset-0 bg-gradient-to-tr from-white/20 to-transparent pointer-events-none"></div>
+        </div>
+        
+        <!-- Decorative elements backdrop -->
+        <div class="absolute -inset-4 bg-brand-green/5 rounded-[2.5rem] -z-10 transform -rotate-2 scale-105"></div>
+        <div class="absolute -bottom-8 -right-8 w-64 h-64 bg-brand-clay/20 rounded-full blur-3xl -z-20"></div>
+      </div>
+
+    </div>
+  </div>
+</section>

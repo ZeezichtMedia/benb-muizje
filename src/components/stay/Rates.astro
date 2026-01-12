@@ -1,0 +1,101 @@
+---
+import { Check, Info } from 'lucide-react';
+
+interface PricePeriod {
+  period: string;
+  weekPrice?: string;
+  weekendPrice?: string;
+  midweekPrice?: string;
+  notes?: string;
+}
+
+interface AdditionalCost {
+  item: string;
+  price: string;
+}
+
+interface Props {
+  data: {
+    title: string;
+    subtitle?: string;
+    prices: PricePeriod[];
+    additionalCosts: AdditionalCost[];
+    includes: string[];
+    policies: string[];
+  };
+}
+
+const { data } = Astro.props;
+---
+
+<section class="py-12 bg-white rounded-2xl shadow-sm border border-brand-clay/20 p-6 md:p-8 my-12" id="tarieven">
+  <div class="text-center mb-10">
+    <h2 class="text-3xl font-heading font-black text-brand-green mb-4">{data.title}</h2>
+    {data.subtitle && <p class="text-brand-dark/70 max-w-2xl mx-auto">{data.subtitle}</p>}
+  </div>
+
+  <div class="overflow-x-auto mb-12 rounded-xl border border-brand-clay/20 shadow-sm">
+    <table class="w-full text-left text-sm md:text-base">
+      <thead class="bg-brand-green text-white">
+        <tr>
+          <th class="p-4 font-heading font-bold">Periode</th>
+          <th class="p-4 font-heading font-bold hidden md:table-cell">Opmerking</th>
+          <th class="p-4 font-heading font-bold text-right">Weekprijs</th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-brand-clay/20 bg-brand-light/20">
+        {data.prices.map((price) => (
+          <tr class="hover:bg-brand-light/50 transition-colors">
+            <td class="p-4 font-medium text-brand-dark">
+                {price.period}
+                <span class="block md:hidden text-xs text-brand-dark/60 mt-1">{price.notes}</span>
+            </td>
+            <td class="p-4 text-brand-dark/80 hidden md:table-cell">{price.notes}</td>
+            <td class="p-4 text-right font-bold text-brand-green">{price.weekPrice || '-'}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+
+  <div class="grid md:grid-cols-2 gap-12">
+    <div>
+      <h3 class="text-xl font-heading font-bold text-brand-green mb-6 flex items-center gap-2">
+        Bijkomende Kosten
+      </h3>
+      <ul class="space-y-4">
+        {data.additionalCosts.map((cost) => (
+           <li class="flex justify-between items-center bg-brand-light/50 p-4 rounded-lg">
+             <span class="text-brand-dark">{cost.item}</span>
+             <span class="font-bold text-brand-green">{cost.price}</span>
+           </li>
+        ))}
+      </ul>
+    </div>
+
+    <div>
+      <h3 class="text-xl font-heading font-bold text-brand-green mb-6 flex items-center gap-2">
+        Inclusief
+      </h3>
+      <ul class="space-y-3">
+        {data.includes.map((item) => (
+          <li class="flex items-start gap-3 text-brand-dark/80">
+            <Check className="w-5 h-5 text-brand-green shrink-0 mt-0.5" />
+            <span>{item}</span>
+          </li>
+        ))}
+      </ul>
+
+      <div class="mt-8 p-4 bg-brand-light rounded-lg border border-brand-clay/20">
+         <h4 class="font-bold text-brand-green mb-2 flex items-center gap-2">
+             <Info className="w-4 h-4" /> Goed om te weten
+         </h4>
+         <ul class="space-y-2 text-sm text-brand-dark/70">
+            {data.policies.map(policy => (
+                <li>• {policy}</li>
+            ))}
+         </ul>
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,50 @@
+---
+import { Wifi, TreePine, Car, Dog, Umbrella, Users } from 'lucide-react';
+
+interface Props {
+  data: {
+    title: string;
+    subtitle: string;
+    items: {
+      icon: string;
+      title: string;
+      desc: string;
+    }[];
+  };
+}
+
+const { data } = Astro.props;
+
+const iconMap: Record<string, any> = {
+  wifi: Wifi,
+  garden: TreePine,
+  parking: Car,
+  dog: Dog,
+  beach: Umbrella,
+  family: Users,
+};
+---
+
+<section class="py-24 bg-brand-light">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-16">
+      <h2 class="text-4xl font-heading font-black text-brand-green mb-4">{data.title}</h2>
+      <p class="text-lg text-brand-dark/70 max-w-2xl mx-auto">{data.subtitle}</p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      {data.items.map((item) => {
+        const IconComponent = iconMap[item.icon] || Wifi;
+        return (
+          <div class="bg-white p-8 rounded-2xl shadow-lg border border-brand-clay/20 hover:shadow-xl transition-shadow group">
+            <div class="w-14 h-14 bg-brand-green/10 rounded-full flex items-center justify-center text-brand-green mb-6 group-hover:bg-brand-green group-hover:text-white transition-colors duration-300">
+              <IconComponent className="w-7 h-7" />
+            </div>
+            <h3 class="text-xl font-bold text-brand-dark mb-3 font-heading">{item.title}</h3>
+            <p class="text-brand-dark/70 leading-relaxed">{item.desc}</p>
+          </div>
+        );
+      })}
+    </div>
+  </div>
+</section>

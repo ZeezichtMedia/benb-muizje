@@ -1,0 +1,73 @@
+---
+import { getRelativeLocaleUrl } from "astro:i18n";
+import { useTranslations } from '../../i18n/ui';
+
+const { lang } = Astro.params;
+const currentLang = (lang as 'nl' | 'en' | 'de') || 'nl';
+const t = useTranslations(currentLang);
+
+const currentYear = new Date().getFullYear();
+
+const links = [
+  { name: t('nav.home'), href: getRelativeLocaleUrl(currentLang, '/') },
+  { name: t('nav.accommodation'), href: getRelativeLocaleUrl(currentLang, 'accommodatie') },
+  { name: t('nav.surroundings'), href: getRelativeLocaleUrl(currentLang, 'omgeving') },
+  { name: t('nav.contact'), href: getRelativeLocaleUrl(currentLang, 'contact') },
+];
+---
+
+<footer class="bg-brand-green text-white py-12 mt-auto">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+      <!-- Brand -->
+      <div class="col-span-1 md:col-span-2">
+        <a href={getRelativeLocaleUrl(currentLang, '/')} class="text-3xl font-heading font-black text-white tracking-tight mb-4 block">
+          my MuiZje
+        </a>
+        <p class="text-brand-clay/90 max-w-sm">
+          {t('footer.tagline')}
+        </p>
+      </div>
+
+      <!-- Links -->
+      <div>
+        <h3 class="font-bold text-white mb-4 font-heading">{t('footer.nav')}</h3>
+        <ul class="space-y-2">
+            {links.map((link) => (
+                <li>
+                    <a href={link.href} class="text-brand-clay/90 hover:text-white transition-colors">
+                        {link.name}
+                    </a>
+                </li>
+            ))}
+        </ul>
+      </div>
+
+      <!-- Contact -->
+      <div>
+        <h3 class="font-bold text-white mb-4 font-heading">{t('nav.contact')}</h3>
+        <address class="not-italic text-brand-clay/90 space-y-2">
+          <p>Camping de Horizon 69</p>
+          <p>4325 HZ Renesse</p>
+          <p>Zeeland, Nederland</p>
+          <p class="pt-2">
+            <a href="mailto:mymuizje@muizert.eu" class="text-white font-bold hover:text-brand-clay transition-colors">
+              mymuizje@muizert.eu
+            </a>
+          </p>
+        </address>
+      </div>
+
+    </div>
+
+    <div class="border-t border-brand-clay/20 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center text-sm text-brand-clay/70">
+      <p>&copy; {currentYear} my MuiZje. {t('footer.rights')}</p>
+      <div class="mt-4 md:mt-0 flex items-center gap-2">
+        <span>{t('footer.by')}</span>
+        <a href="https://zee-zicht.nl" target="_blank" rel="noopener noreferrer" class="font-bold text-white hover:text-brand-clay transition-colors">
+            Zee-Zicht
+        </a>
+      </div>
+    </div>
+  </div>
+</footer>

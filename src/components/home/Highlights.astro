@@ -1,0 +1,52 @@
+---
+import { Waves, TreeDeciduous, House } from 'lucide-react';
+
+interface Highlight {
+  title: string;
+  desc: string;
+  icon: string;
+}
+
+interface Props {
+  data: {
+    title: string;
+    items: Highlight[];
+  };
+}
+
+const { data } = Astro.props;
+
+const iconMap: Record<string, any> = {
+  beach: Waves,
+  garden: TreeDeciduous,
+  comfort: House,
+};
+---
+
+<section class="py-24 bg-brand-light relative overflow-hidden">
+  <!-- Decorative background elements -->
+  <div class="absolute top-0 right-0 -mr-20 -mt-20 w-96 h-96 bg-brand-green/5 rounded-full blur-3xl"></div>
+  <div class="absolute bottom-0 left-0 -ml-20 -mb-20 w-80 h-80 bg-brand-clay/20 rounded-full blur-3xl"></div>
+
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+    <div class="text-center mb-16">
+      <h2 class="text-3xl md:text-5xl font-heading font-black text-brand-green mb-4 animate-slide-up">{data.title}</h2>
+      <div class="w-24 h-1 bg-brand-clay mx-auto rounded-full"></div>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      {data.items.map((item, index) => {
+        const Icon = iconMap[item.icon] || Waves;
+        return (
+          <div class="bg-white p-8 rounded-3xl shadow-sm border border-brand-clay/20 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 group">
+            <div class="w-16 h-16 bg-brand-light rounded-2xl flex items-center justify-center text-brand-green mb-6 group-hover:bg-brand-green group-hover:text-white transition-colors duration-300">
+              <Icon className="w-8 h-8" />
+            </div>
+            <h3 class="text-2xl font-bold font-heading text-brand-green mb-3">{item.title}</h3>
+            <p class="text-brand-dark/70 leading-relaxed">{item.desc}</p>
+          </div>
+        )
+      })}
+    </div>
+  </div>
+</section>
