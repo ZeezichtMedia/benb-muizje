@@ -1,6 +1,7 @@
 ---
 import { getRelativeLocaleUrl } from "astro:i18n";
 import Button from '../common/Button.astro';
+import { useTranslations } from '../../i18n/ui';
 
 interface Props {
   data: {
@@ -13,7 +14,8 @@ interface Props {
 }
 
 const { data } = Astro.props;
-const currentLang = Astro.currentLocale || 'nl';
+const currentLang = (Astro.currentLocale as 'nl' | 'en' | 'de') || 'nl';
+const t = useTranslations(currentLang);
 const bgImage = data.image || '/images/hero.jpg';
 ---
 
@@ -24,8 +26,8 @@ const bgImage = data.image || '/images/hero.jpg';
       <!-- Text Content -->
       <div class="relative z-10 text-center lg:text-left order-2 lg:order-1">
         <h1 class="text-4xl md:text-6xl lg:text-7xl font-heading font-black text-brand-green mb-6 leading-tight animate-slide-up">
-            <span class="font-['Caveat'] text-5xl md:text-7xl lg:text-8xl text-brand-green/80 block mb-2 -rotate-2 origin-bottom-left">Aan zee...</span>
-            bij my MuiZje
+            <span class="font-['Caveat'] text-5xl md:text-7xl lg:text-8xl text-brand-green/80 block mb-2 -rotate-2 origin-bottom-left">{t('hero.home.aan_zee')}</span>
+            {t('hero.home.by')} my MuiZje
         </h1>
         <p class="text-lg md:text-xl text-brand-dark/80 mb-8 font-medium max-w-2xl mx-auto lg:mx-0 leading-relaxed animate-slide-up delay-100">
             {data.subtitle}

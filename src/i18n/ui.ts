@@ -25,6 +25,8 @@ export const ui = {
         'hero.surroundings.subtitle': 'Ontdek Zeeland...',
         'hero.gallery.subtitle': 'Een impressie...',
         'hero.contact.subtitle': 'Vragen?...',
+        'hero.home.aan_zee': 'Aan zee...',
+        'hero.home.by': 'bij',
     },
     en: {
         'nav.home': 'Home',
@@ -52,6 +54,8 @@ export const ui = {
         'hero.surroundings.subtitle': 'Discover Zeeland...',
         'hero.gallery.subtitle': 'An impression...',
         'hero.contact.subtitle': 'Questions?...',
+        'hero.home.aan_zee': 'By the sea...',
+        'hero.home.by': 'at',
     },
     de: {
         'nav.home': 'Home',
@@ -79,6 +83,8 @@ export const ui = {
         'hero.surroundings.subtitle': 'Zeeland entdecken...',
         'hero.gallery.subtitle': 'Ein Eindruck...',
         'hero.contact.subtitle': 'Fragen?...',
+        'hero.home.aan_zee': 'Am Meer...',
+        'hero.home.by': 'bei',
     },
 } as const;
 
