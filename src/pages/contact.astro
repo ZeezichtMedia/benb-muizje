@@ -1,31 +1,21 @@
 ---
 import { getCollection } from 'astro:content';
-import Layout from '../../layouts/Layout.astro';
-import Navbar from '../../components/common/Navbar.astro';
-import Footer from '../../components/common/Footer.astro';
+import Layout from '../layouts/Layout.astro';
+import Navbar from '../components/common/Navbar.astro';
+import Footer from '../components/common/Footer.astro';
 import { MapPin, Phone, Mail } from 'lucide-react';
-import { useTranslations } from '../../i18n/ui';
+import { useTranslations } from '../i18n/ui';
 
-export async function getStaticPaths() {
-  const pages = await getCollection('site');
-  
-  const paths = pages
-    .filter(page => {
-       const [lang, slug] = page.slug.split('/');
-       return lang !== 'nl' && ['contact', 'kontakt'].includes(slug!);
-    })
-    .map(page => {
-      const [lang] = page.slug.split('/');
-      return { params: { lang }, props: { page } };
-    });
+const pages = await getCollection('site');
+const page = pages.find(p => p.slug === 'nl/contact');
+export const prerender = true;
 
-  return paths;
+if (!page) {
+    throw new Error('NL Contact page not found');
 }
 
-const { lang } = Astro.params;
-const { page } = Astro.props;
 const { data } = page;
-const currentLang = (lang as 'nl' | 'en' | 'de') || 'nl';
+const currentLang = 'nl';
 const t = useTranslations(currentLang);
 ---
 

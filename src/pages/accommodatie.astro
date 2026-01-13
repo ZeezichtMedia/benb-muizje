@@ -1,34 +1,25 @@
 ---
 import { getCollection } from 'astro:content';
-import Layout from '../../layouts/Layout.astro';
-import Navbar from '../../components/common/Navbar.astro';
-import Footer from '../../components/common/Footer.astro';
-import Features from '../../components/home/Features.astro';
-import MasonryGallery from '../../components/common/MasonryGallery.astro';
-import Rates from '../../components/stay/Rates.astro';
+import Layout from '../layouts/Layout.astro';
+import Navbar from '../components/common/Navbar.astro';
+import Footer from '../components/common/Footer.astro';
+import Features from '../components/home/Features.astro';
+import MasonryGallery from '../components/common/MasonryGallery.astro';
+import Rates from '../components/stay/Rates.astro';
+import { useTranslations } from '../i18n/ui';
 
-import { useTranslations } from '../../i18n/ui';
+// Fetch Dutch content explicitly
+const pages = await getCollection('site');
+const page = pages.find(p => p.slug === 'nl/accommodatie');
+export const prerender = true;
 
-export async function getStaticPaths() {
-  const pages = await getCollection('site');
-  
-  const paths = pages
-    .filter(page => {
-       const [lang, slug] = page.slug.split('/');
-       return lang !== 'nl' && ['accommodatie', 'accommodation', 'unterkunft'].includes(slug!);
-    })
-    .map(page => {
-      const [lang] = page.slug.split('/');
-      return { params: { lang }, props: { page } };
-    });
-
-  return paths;
+if (!page) {
+    // Fallback or error if content is missing
+    throw new Error('NL Accommodation content not found');
 }
 
-const { lang } = Astro.params;
-const { page } = Astro.props;
 const { data } = page;
-const currentLang = (lang as 'nl' | 'en' | 'de') || 'nl';
+const currentLang = 'nl';
 const t = useTranslations(currentLang);
 ---
 

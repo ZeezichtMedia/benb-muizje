@@ -1,32 +1,21 @@
 ---
 import { getCollection } from 'astro:content';
-import Layout from '../../layouts/Layout.astro';
-import Navbar from '../../components/common/Navbar.astro';
-import Footer from '../../components/common/Footer.astro';
-import Location from '../../components/home/Location.astro';
+import Layout from '../layouts/Layout.astro';
+import Navbar from '../components/common/Navbar.astro';
+import Footer from '../components/common/Footer.astro';
+import Location from '../components/home/Location.astro';
+import { useTranslations } from '../i18n/ui';
 
-import { useTranslations } from '../../i18n/ui';
+const pages = await getCollection('site');
+const page = pages.find(p => p.slug === 'nl/omgeving');
+export const prerender = true;
 
-export async function getStaticPaths() {
-  const pages = await getCollection('site');
-  
-  const paths = pages
-    .filter(page => {
-       const [lang, slug] = page.slug.split('/');
-       return lang !== 'nl' && ['omgeving', 'surroundings', 'umgebung'].includes(slug!);
-    })
-    .map(page => {
-      const [lang] = page.slug.split('/');
-      return { params: { lang }, props: { page } };
-    });
-
-  return paths;
+if (!page) {
+    throw new Error('NL Surroundings page not found');
 }
 
-const { lang } = Astro.params;
-const { page } = Astro.props;
 const { data } = page;
-const currentLang = (lang as 'nl' | 'en' | 'de') || 'nl';
+const currentLang = 'nl';
 const t = useTranslations(currentLang);
 ---
 
