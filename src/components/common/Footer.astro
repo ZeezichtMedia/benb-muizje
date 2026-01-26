@@ -1,6 +1,7 @@
 ---
 import { getRelativeLocaleUrl } from "astro:i18n";
 import { useTranslations } from '../../i18n/ui';
+import { Mail } from 'lucide-react';
 
 const { lang } = Astro.params;
 const currentLang = (lang as 'nl' | 'en' | 'de') || 'nl';
@@ -16,56 +17,86 @@ const links = [
 ];
 ---
 
-<footer class="bg-brand-green text-white py-12 mt-auto">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+<footer class="relative bg-brand-green text-white py-16 mt-auto overflow-hidden">
+  <!-- Decorative Wave at Top -->
+  <div class="absolute top-0 left-0 right-0 pointer-events-none transform -translate-y-full">
+    <svg viewBox="0 0 1440 120" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-full h-auto">
+      <path d="M0 0L60 10C120 20 240 40 360 50C480 60 600 60 720 55C840 50 960 40 1080 35C1200 30 1320 30 1380 30L1440 30V0H1380C1320 0 1200 0 1080 0C960 0 840 0 720 0C600 0 480 0 360 0C240 0 120 0 60 0H0Z" fill="url(#footerGradient)"/>
+      <defs>
+        <linearGradient id="footerGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" style="stop-color:#2C5530;stop-opacity:1" />
+          <stop offset="50%" style="stop-color:#14B8A6;stop-opacity:0.8" />
+          <stop offset="100%" style="stop-color:#10B981;stop-opacity:1" />
+        </linearGradient>
+      </defs>
+    </svg>
+  </div>
+
+  <!-- Floating Background Elements -->
+  <div class="absolute inset-0 pointer-events-none opacity-10">
+    <div class="absolute top-10 right-20 w-64 h-64 bg-white rounded-full blur-3xl animate-float"></div>
+    <div class="absolute bottom-10 left-20 w-80 h-80 bg-brand-teal rounded-full blur-3xl animate-float delay-400"></div>
+  </div>
+
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-12">
       <!-- Brand -->
       <div class="col-span-1 md:col-span-2">
-        <a href={getRelativeLocaleUrl(currentLang, '/')} class="text-3xl font-heading font-black text-white tracking-tight mb-4 block">
-          my MuiZje
+        <a href={getRelativeLocaleUrl(currentLang, '/')} class="block hover:scale-105 transition-transform inline-block mb-4">
+          <img 
+            src="/images/logo.png" 
+            alt="Zeeuwse Buurn Logo" 
+            class="h-16 w-auto brightness-0 invert"
+          />
         </a>
-        <p class="text-brand-clay/90 max-w-sm">
+        <p class="text-white/80 max-w-sm leading-relaxed mb-6">
           {t('footer.tagline')}
         </p>
       </div>
 
       <!-- Links -->
       <div>
-        <h3 class="font-bold text-white mb-4 font-heading">{t('footer.nav')}</h3>
-        <ul class="space-y-2">
-            {links.map((link) => (
-                <li>
-                    <a href={link.href} class="text-brand-clay/90 hover:text-white transition-colors">
-                        {link.name}
-                    </a>
-                </li>
-            ))}
+        <h3 class="font-bold text-white mb-4 font-heading text-lg">{t('footer.nav')}</h3>
+        <ul class="space-y-3">
+          {links.map((link) => (
+            <li>
+              <a href={link.href} class="text-white/70 hover:text-white transition-all hover:translate-x-1 inline-block">
+                → {link.name}
+              </a>
+            </li>
+          ))}
         </ul>
       </div>
 
       <!-- Contact -->
       <div>
-        <h3 class="font-bold text-white mb-4 font-heading">{t('nav.contact')}</h3>
-        <address class="not-italic text-brand-clay/90 space-y-2">
+        <h3 class="font-bold text-white mb-4 font-heading text-lg">{t('nav.contact')}</h3>
+        <address class="not-italic text-white/70 space-y-2 leading-relaxed">
           <p>Camping de Horizon 69</p>
           <p>4325 HZ Renesse</p>
           <p>Zeeland, Nederland</p>
-          <p class="pt-2">
-            <a href="mailto:mymuizje@muizert.eu" class="text-white font-bold hover:text-brand-clay transition-colors">
-              mymuizje@muizert.eu
+          <p class="pt-3">
+            <a href="mailto:info@zeeuwsebuurn.nl" class="text-white font-bold hover:text-brand-clay transition-colors inline-flex items-center gap-2 group">
+              <Mail className="w-5 h-5 group-hover:scale-110 transition-transform" />
+              info@zeeuwsebuurn.nl
             </a>
           </p>
         </address>
       </div>
-
     </div>
 
-    <div class="border-t border-brand-clay/20 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center text-sm text-brand-clay/70">
-      <p>&copy; {currentYear} my MuiZje. {t('footer.rights')}</p>
-      <div class="mt-4 md:mt-0 flex items-center gap-2">
+    <!-- Bottom Bar -->
+    <div class="border-t border-white/20 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center text-sm text-white/60">
+      <p class="mb-4 md:mb-0">&copy; {currentYear} Zeeuwse Buurn. {t('footer.rights')}</p>
+      <div class="flex items-center gap-2">
         <span>{t('footer.by')}</span>
-        <a href="https://zee-zicht.nl" target="_blank" rel="noopener noreferrer" class="font-bold text-white hover:text-brand-clay transition-colors">
-            Zee-Zicht
+        <a 
+          href="https://zee-zicht.nl" 
+          target="_blank" 
+          rel="noopener noreferrer" 
+          class="font-bold text-white hover:text-brand-clay transition-all hover:scale-105 inline-block"
+        >
+          Zee-Zicht
         </a>
       </div>
     </div>

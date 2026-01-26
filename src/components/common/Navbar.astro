@@ -14,28 +14,39 @@ const links = [
   { name: t('nav.surroundings'), href: getRelativeLocaleUrl(currentLang, 'omgeving') },
   { name: t('nav.gallery'), href: getRelativeLocaleUrl(currentLang, 'gallerij') },
   { name: t('nav.contact'), href: getRelativeLocaleUrl(currentLang, 'contact') },
-  // Booking link visible in mobile menu or desktop list if needed, or just rely on the button
 ];
 ---
 
-<nav class="fixed top-0 w-full z-50 bg-white/90 backdrop-blur-md border-b border-brand-clay/20 shadow-sm">
+<nav class="fixed top-0 w-full z-50 transition-all duration-300 bg-transparent py-4" id="navbar">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="flex justify-between items-center h-24">
+    <div class="flex justify-between items-center h-20 transition-all duration-300" id="nav-container">
       <!-- Logo -->
       <div class="flex-shrink-0 flex items-center">
-        <a href={getRelativeLocaleUrl(currentLang, '/')} class="text-3xl font-heading font-black text-brand-green tracking-tight hover:opacity-80 transition-opacity">
-          my MuiZje
+        <a href={getRelativeLocaleUrl(currentLang, '/')} class="block hover:scale-105 transition-transform duration-300">
+          <img 
+            src="/images/logo.png" 
+            alt="Zeeuwse Buurn Logo" 
+            class="h-16 w-auto"
+          />
         </a>
       </div>
 
       <!-- Desktop Menu -->
       <div class="hidden md:flex items-center space-x-8">
         {links.map((link) => (
-          <a href={link.href} class="text-brand-dark font-medium hover:text-brand-green transition-colors font-heading text-lg">
+          <a 
+            href={link.href} 
+            class="relative text-brand-dark font-medium hover:text-brand-green transition-colors font-heading text-lg group"
+          >
             {link.name}
+            <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-brand-green group-hover:w-full transition-all duration-300"></span>
           </a>
         ))}
-        <Button href={getRelativeLocaleUrl(currentLang, 'boeken')} variant="primary" class="!bg-brand-green hover:!bg-brand-dark !text-white !font-bold !rounded-full !px-8 !py-3 !shadow-lg">
+        <Button 
+          href={getRelativeLocaleUrl(currentLang, 'boeken')} 
+          variant="primary" 
+          class="bg-brand-green hover:bg-brand-dark hover:shadow-xl hover-glow !text-white !font-bold !rounded-full !px-8 !py-3 transform hover:scale-105 transition-all"
+        >
           {t('btn.book')}
         </Button>
         <LanguagePicker />
@@ -44,7 +55,7 @@ const links = [
       <!-- Mobile Menu Button -->
       <div class="md:hidden flex items-center gap-4">
         <LanguagePicker />
-        <button id="mobile-menu-btn" class="text-brand-dark hover:text-brand-green focus:outline-none">
+        <button id="mobile-menu-btn" class="text-brand-dark hover:text-brand-green focus:outline-none transition-colors p-2 rounded-lg hover:bg-brand-light/50">
           <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
           </svg>
@@ -53,16 +64,24 @@ const links = [
     </div>
   </div>
 
-  <!-- Mobile Menu -->
-  <div id="mobile-menu" class="hidden md:hidden bg-white border-b border-brand-clay/20">
-    <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-      {links.map((link) => (
-        <a href={link.href} class="block px-3 py-2 text-base font-medium text-brand-dark hover:text-brand-green hover:bg-brand-light rounded-md">
+  <!-- Mobile Menu with Slide Animation -->
+  <div id="mobile-menu" class="hidden md:hidden bg-white/95 backdrop-blur-md border-t border-brand-clay/20 shadow-xl">
+    <div class="px-4 pt-4 pb-6 space-y-2">
+      {links.map((link, index) => (
+        <a 
+          href={link.href} 
+          class="block px-4 py-3 text-base font-medium text-brand-dark hover:text-brand-green hover:bg-brand-light/50 rounded-xl transition-all animate-slide-up"
+          style={`animation-delay: ${index * 50}ms`}
+        >
           {link.name}
         </a>
       ))}
-      <div class="pt-4 pb-2">
-        <Button href={getRelativeLocaleUrl(currentLang, 'boeken')} variant="primary" class="w-full justify-center !bg-brand-green text-white">
+      <div class="pt-2 animate-slide-up delay-300">
+        <Button 
+          href={getRelativeLocaleUrl(currentLang, 'boeken')} 
+          variant="primary" 
+          class="w-full justify-center bg-brand-green hover:bg-brand-dark !text-white !rounded-full !py-3 shadow-lg"
+        >
           {t('btn.book')}
         </Button>
       </div>
@@ -73,10 +92,38 @@ const links = [
 <script>
   const btn = document.getElementById('mobile-menu-btn');
   const menu = document.getElementById('mobile-menu');
+  const navbar = document.getElementById('navbar');
+  const navContainer = document.getElementById('nav-container');
 
+  // Mobile menu toggle
   if (btn && menu) {
     btn.addEventListener('click', () => {
       menu.classList.toggle('hidden');
     });
   }
+
+  // Scroll effect for navbar
+  const handleScroll = () => {
+    const currentScroll = window.scrollY;
+    
+    if (navbar && navContainer) {
+      if (currentScroll > 20) {
+        // Scrolled state
+        navbar.classList.remove('bg-transparent', 'py-4');
+        navbar.classList.add('bg-white/95', 'backdrop-blur-md', 'shadow-lg', 'py-2');
+        navContainer.classList.remove('h-20');
+        navContainer.classList.add('h-16');
+      } else {
+        // Top state
+        navbar.classList.add('bg-transparent', 'py-4');
+        navbar.classList.remove('bg-white/95', 'backdrop-blur-md', 'shadow-lg', 'py-2');
+        navContainer.classList.add('h-20');
+        navContainer.classList.remove('h-16');
+      }
+    }
+  };
+
+  window.addEventListener('scroll', handleScroll);
+  // Initial check
+  handleScroll();
 </script>

@@ -1,20 +1,20 @@
 ---
-title: "Bed and Breakfast my MuiZje"
+title: "Bed and Breakfast Zeeuwse Buurn"
 description: "Entspannen Sie an der Küste Seelands. Ihr Ferienhaus in Renesse für Ruhe, Raum und Natur."
 hero:
-  title: "Am Meer...\nbei my MuiZje"
+  title: "Am Meer...\nbei Zeeuwse Buurn"
   subtitle: "Ein schönes 4-Personen-Ferienhaus nur wenige Gehminuten vom Strand entfernt. Genießen Sie Ruhe, Raum und Natur."
   image: "/images/home-hero.jpg"
   ctaPrimary: "Jetzt Buchen"
   ctaSecondary: "Mehr Info"
 about:
-  title: "Willkommen bei my MuiZje"
+  title: "Willkommen bei Zeeuwse Buurn"
   text:
-    - "In wunderschöner Lage in Renesse, im Bungalowpark 'De Horizon', finden Sie unser gemütliches 4-Personen-Ferienhaus 'my MuiZje'."
+    - "In wunderschöner Lage in Renesse, im Bungalowpark 'De Horizon', finden Sie unser gemütliches 4-Personen-Ferienhaus 'Zeeuwse Buurn'."
     - "Das Haus ist freistehend und von einem großen Garten von 350m² umgeben, so dass Sie optimale Privatsphäre genießen. Es ist der perfekte Ausgangspunkt für einen erholsamen Urlaub an der Küste Seelands."
     - "Vom Park aus können Sie zu Fuß, mit dem Fahrrad oder (im Sommer kostenlos) mit dem Pendelbus zum Strand und ins Zentrum von Renesse fahren. Genießen Sie die Dünen, das Meer und das geschäftige Treiben im Dorf, um sich dann in Ihrem eigenen Haus zu entspannen."
 highlights:
-  title: "Warum my MuiZje?"
+  title: "Warum Zeeuwse Buurn?"
   items:
     - title: "Nah am Meer"
       desc: "Nur wenige Minuten vom schönen Strand von Renesse entfernt."

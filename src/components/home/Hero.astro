@@ -19,33 +19,47 @@ const t = useTranslations(currentLang);
 const bgImage = data.image || '/images/hero.jpg';
 ---
 
-<section class="relative pt-32 pb-16 md:py-32 lg:py-40 bg-gradient-to-br from-brand-light via-white to-brand-clay/10 overflow-hidden">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<section class="relative pt-32 pb-16 md:py-32 lg:py-40 gradient-bg-hero overflow-hidden">
+  <!-- Animated Background Blobs -->
+  <div class="absolute inset-0 overflow-hidden pointer-events-none">
+    <div class="absolute top-20 -left-20 w-96 h-96 bg-brand-teal/10 blob animate-float"></div>
+    <div class="absolute bottom-20 -right-20 w-80 h-80 bg-brand-emerald/10 blob animate-float delay-300"></div>
+    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-brand-clay/20 blob animate-float delay-500"></div>
+  </div>
+
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
     <div class="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
       
       <!-- Text Content -->
-      <div class="relative z-10 text-center lg:text-left order-2 lg:order-1">
-        <h1 class="text-4xl md:text-6xl lg:text-7xl font-heading font-black text-brand-green mb-6 leading-tight animate-slide-up">
-            <span class="font-['Caveat'] text-5xl md:text-7xl lg:text-8xl text-brand-green/80 block mb-2 -rotate-2 origin-bottom-left">{t('hero.home.aan_zee')}</span>
-            {t('hero.home.by')} my MuiZje
+      <div class="relative text-center lg:text-left order-2 lg:order-1">
+        <h1 class="text-4xl md:text-6xl lg:text-7xl font-heading font-black mb-6 leading-tight animate-slide-up">
+          <span class="font-['Caveat'] text-5xl md:text-7xl lg:text-8xl block mb-2 -rotate-2 origin-bottom-left gradient-text-warm text-shadow-lg">
+            {t('hero.home.aan_zee')}
+          </span>
+          <span class="gradient-text text-shadow">
+            {t('hero.home.by')} Zeeuwse Buurn
+          </span>
         </h1>
+        
         <p class="text-lg md:text-xl text-brand-dark/80 mb-8 font-medium max-w-2xl mx-auto lg:mx-0 leading-relaxed animate-slide-up delay-100">
-            {data.subtitle}
+          {data.subtitle}
         </p>
         
         <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start animate-slide-up delay-200">
+          <!-- Desktop Primary Button -->
           <Button 
             href={getRelativeLocaleUrl(currentLang, 'boeken')} 
             variant="primary" 
-            class="!bg-brand-green hover:!bg-brand-dark !text-white !font-bold !px-8 !py-4 shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all w-full sm:w-auto justify-center text-lg hidden sm:inline-flex"
+            class="hidden sm:inline-flex bg-brand-green hover:bg-brand-dark hover:shadow-2xl hover-glow !text-white !font-bold !px-8 !py-4 !rounded-full shadow-lg transform hover:scale-105 transition-all w-full sm:w-auto justify-center text-lg"
           >
             {data.ctaPrimary}
           </Button>
-           <!-- Mobile only booking button -->
+          
+          <!-- Mobile Primary Button -->
           <Button 
             href={getRelativeLocaleUrl(currentLang, 'boeken')} 
             variant="primary" 
-            class="!bg-brand-green hover:!bg-brand-dark !text-white !font-bold !px-8 !py-4 shadow-lg w-full justify-center text-lg sm:hidden"
+            class="sm:hidden bg-brand-green hover:bg-brand-dark !text-white !font-bold !px-8 !py-4 !rounded-full shadow-lg w-full justify-center text-lg"
           >
             {data.ctaPrimary}
           </Button>
@@ -53,31 +67,44 @@ const bgImage = data.image || '/images/hero.jpg';
           <Button 
             href={getRelativeLocaleUrl(currentLang, 'accommodatie')} 
             variant="outline" 
-            class="!border-2 !border-brand-green !text-brand-green hover:!bg-brand-green hover:!text-white !font-bold !px-8 !py-4 w-full sm:w-auto justify-center text-lg"
+            class="glass !border-2 !border-brand-green !text-brand-green hover:!bg-brand-green hover:!text-white !font-bold !px-8 !py-4 !rounded-full w-full sm:w-auto justify-center text-lg transition-all duration-300"
           >
             {data.ctaSecondary}
           </Button>
         </div>
       </div>
 
-      <!-- Image -->
-      <div class="relative order-1 lg:order-2 animate-fade-in">
-        <div class="relative rounded-3xl overflow-hidden shadow-2xl aspect-[4/3] transform lg:rotate-2 hover:rotate-0 transition-transform duration-700 ease-out">
-            <img 
-              src={bgImage} 
-              alt="My MuiZje Exterieur" 
-              class="w-full h-full object-cover"
-              loading="eager"
-            />
-            <!-- Shine effect -->
-            <div class="absolute inset-0 bg-gradient-to-tr from-white/20 to-transparent pointer-events-none"></div>
+      <!-- Image with Glassmorphic Overlay -->
+      <div class="relative order-1 lg:order-2 animate-scale-in">
+        <div class="relative rounded-3xl overflow-hidden shadow-2xl aspect-[4/3] group">
+          <img 
+            src={bgImage} 
+            alt="Zeeuwse Buurn Exterieur" 
+            class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700 ease-out"
+            loading="eager"
+          />
+          
+          <!-- Glassmorphic Overlay -->
+          <div class="absolute inset-0 bg-gradient-to-tr from-brand-green/20 via-transparent to-brand-teal/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+          
+          
+          <!-- Shine Effect -->
+          <div class="absolute inset-0 bg-gradient-to-tr from-white/30 to-transparent pointer-events-none"></div>
         </div>
         
-        <!-- Decorative elements backdrop -->
-        <div class="absolute -inset-4 bg-brand-green/5 rounded-[2.5rem] -z-10 transform -rotate-2 scale-105"></div>
-        <div class="absolute -bottom-8 -right-8 w-64 h-64 bg-brand-clay/20 rounded-full blur-3xl -z-20"></div>
+        <!-- Decorative Elements -->
+        <div class="absolute -inset-4 bg-gradient-to-br from-brand-teal/10 to-brand-emerald/10 rounded-[2.5rem] -z-10 transform rotate-3 scale-105 blur-sm"></div>
+        <div class="absolute -bottom-8 -right-8 w-64 h-64 bg-brand-clay/30 rounded-full blur-3xl -z-20 animate-float"></div>
+        <div class="absolute -top-8 -left-8 w-48 h-48 bg-brand-teal/20 rounded-full blur-2xl -z-20 animate-float delay-400"></div>
       </div>
 
     </div>
+  </div>
+  
+  <!-- Decorative SVG Wave at Bottom -->
+  <div class="absolute bottom-0 left-0 right-0 pointer-events-none">
+    <svg viewBox="0 0 1440 120" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-full h-auto">
+      <path d="M0 120L60 110C120 100 240 80 360 70C480 60 600 60 720 65C840 70 960 80 1080 85C1200 90 1320 90 1380 90L1440 90V120H1380C1320 120 1200 120 1080 120C960 120 840 120 720 120C600 120 480 120 360 120C240 120 120 120 60 120H0Z" fill="white" fill-opacity="0.1"/>
+    </svg>
   </div>
 </section>
