@@ -26,10 +26,10 @@ const bgImage = data.image || '/images/hero.jpg';
       <!-- Text Content -->
       <div class="relative text-center lg:text-left order-2 lg:order-1">
         <h1 class="text-4xl md:text-6xl lg:text-7xl font-heading font-black mb-6 leading-tight">
-          <span class="font-['Caveat'] text-5xl md:text-7xl lg:text-8xl block mb-2 -rotate-2 origin-bottom-left gradient-text-warm text-shadow-lg">
+          <span class="font-['Caveat'] text-5xl md:text-7xl lg:text-8xl block mb-2 -rotate-2 origin-bottom-left text-brand-clay drop-shadow-sm">
             {t('hero.home.aan_zee')}
           </span>
-          <span class="gradient-text text-shadow">
+          <span class="text-brand-green drop-shadow-sm">
             {t('hero.home.by')} Zeeuwse Buurn
           </span>
         </h1>
@@ -69,24 +69,24 @@ const bgImage = data.image || '/images/hero.jpg';
 
       <!-- Image with Glassmorphic Overlay -->
       <div class="relative order-1 lg:order-2">
-        <div class="relative rounded-3xl overflow-hidden shadow-2xl aspect-[4/3] group">
+        <div class="relative rounded-3xl overflow-hidden shadow-2xl aspect-[4/3] group z-10">
           <img 
             src={bgImage} 
             alt="Zeeuwse Buurn Exterieur" 
-            class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700 ease-out"
+            class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700 ease-out"
             loading="eager"
           />
           
           <!-- Glassmorphic Overlay -->
-          <div class="absolute inset-0 bg-gradient-to-tr from-brand-green/20 via-transparent to-brand-teal/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-          
+          <div class="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
           
           <!-- Shine Effect -->
-          <div class="absolute inset-0 bg-gradient-to-tr from-white/30 to-transparent pointer-events-none"></div>
+          <div class="absolute inset-0 bg-gradient-to-tr from-white/20 to-transparent pointer-events-none"></div>
         </div>
         
-        <!-- Decorative Elements -->
-        <div class="absolute -inset-4 bg-gradient-to-br from-brand-teal/10 to-brand-emerald/10 rounded-[2.5rem] -z-10 transform rotate-3 scale-105 blur-sm"></div>
+        <!-- Clean Offset Border (Static & Tight) -->
+        <div class="absolute top-4 -right-4 w-full h-full border-2 border-brand-teal/30 rounded-3xl -z-10"></div>
+        <div class="absolute -top-4 left-4 w-full h-full border-2 border-brand-green/10 rounded-3xl -z-20"></div>
       </div>
 
     </div>
