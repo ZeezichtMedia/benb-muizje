@@ -26,7 +26,7 @@ const bgImage = data.image || '/images/hero.jpg';
       <!-- Text Content -->
       <div class="relative text-center lg:text-left order-2 lg:order-1">
         <h1 class="text-4xl md:text-6xl lg:text-7xl font-heading font-black mb-6 leading-tight">
-          <span class="font-['Caveat'] text-5xl md:text-7xl lg:text-8xl block mb-2 -rotate-2 origin-bottom-left text-brand-teal drop-shadow-sm">
+          <span class="font-['Caveat'] text-5xl md:text-7xl lg:text-8xl block mb-2 -rotate-2 origin-bottom-left text-brand-accent drop-shadow-sm">
             {t('hero.home.aan_zee')}
           </span>
           <span class="text-brand-green drop-shadow-sm">
@@ -43,7 +43,7 @@ const bgImage = data.image || '/images/hero.jpg';
           <Button 
             href={getRelativeLocaleUrl(currentLang, 'boeken')} 
             variant="primary" 
-            class="hidden sm:inline-flex bg-brand-green hover:bg-brand-dark hover:shadow-2xl hover-glow !text-white !font-bold !px-8 !py-4 !rounded-full shadow-lg transform hover:scale-105 transition-all w-full sm:w-auto justify-center text-lg"
+            class="!hidden sm:!inline-flex bg-brand-green hover:bg-brand-dark hover:shadow-2xl hover-glow !text-white !font-bold !px-8 !py-4 !rounded-full shadow-lg transform hover:scale-105 transition-all w-full sm:w-auto justify-center text-lg"
           >
             {data.ctaPrimary}
           </Button>
@@ -52,7 +52,7 @@ const bgImage = data.image || '/images/hero.jpg';
           <Button 
             href={getRelativeLocaleUrl(currentLang, 'boeken')} 
             variant="primary" 
-            class="sm:hidden bg-brand-green hover:bg-brand-dark !text-white !font-bold !px-8 !py-4 !rounded-full shadow-lg w-full justify-center text-lg"
+            class="sm:!hidden bg-brand-green hover:bg-brand-dark !text-white !font-bold !px-8 !py-4 !rounded-full shadow-lg w-full justify-center text-lg"
           >
             {data.ctaPrimary}
           </Button>
@@ -85,7 +85,7 @@ const bgImage = data.image || '/images/hero.jpg';
         </div>
         
         <!-- Clean Offset Border (Static & Tight) -->
-        <div class="absolute top-4 -right-4 w-full h-full border-2 border-brand-teal/30 rounded-3xl -z-10"></div>
+        <div class="absolute top-4 -right-4 w-full h-full border-2 border-brand-accent/30 rounded-3xl -z-10"></div>
         <div class="absolute -top-4 left-4 w-full h-full border-2 border-brand-green/10 rounded-3xl -z-20"></div>
       </div>
 

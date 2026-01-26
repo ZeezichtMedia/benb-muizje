@@ -28,13 +28,13 @@ const iconMap: Record<string, any> = {
 <section class="py-24 bg-gradient-to-b from-white to-brand-light relative overflow-hidden">
   <!-- Decorative Background Elements -->
   <div class="absolute inset-0 pointer-events-none">
-    <div class="absolute top-20 right-10 w-72 h-72 bg-brand-teal/5 rounded-full blur-3xl"></div>
+    <div class="absolute top-20 right-10 w-72 h-72 bg-brand-accent/5 rounded-full blur-3xl"></div>
     <div class="absolute bottom-20 left-10 w-96 h-96 bg-brand-clay/10 rounded-full blur-3xl"></div>
   </div>
 
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
     <div class="text-center mb-16 animate-slide-up">
-      <h2 class="text-4xl md:text-5xl font-heading font-black gradient-text mb-4 text-shadow">{data.title}</h2>
+      <h2 class="text-4xl md:text-5xl font-heading font-black text-brand-green mb-4 text-shadow">{data.title}</h2>
       <p class="text-lg md:text-xl text-brand-dark/70 max-w-2xl mx-auto leading-relaxed">{data.subtitle}</p>
     </div>
 
@@ -53,7 +53,7 @@ const iconMap: Record<string, any> = {
             <p class="text-brand-dark/70 leading-relaxed">{item.desc}</p>
             
             <!-- Decorative Corner Accent -->
-            <div class="absolute top-0 right-0 w-20 h-20 bg-gradient-to-br from-brand-teal/10 to-transparent rounded-bl-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+            <div class="absolute top-0 right-0 w-20 h-20 bg-gradient-to-br from-brand-accent/10 to-transparent rounded-bl-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
           </div>
         );
       })}

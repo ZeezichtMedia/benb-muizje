@@ -8,13 +8,13 @@
     --color-brand-light: #F9F5F3;
 
     /* Accent Colors */
-    --color-brand-teal: #14B8A6;
+    --color-brand-accent: #CA8A04;
     --color-brand-amber: #F59E0B;
     --color-brand-emerald: #10B981;
 
     /* Gradient Colors */
     --color-gradient-start: #2C5530;
-    --color-gradient-mid: #14B8A6;
+    --color-gradient-mid: #CA8A04;
     --color-gradient-end: #10B981;
 
     /* Fonts */
@@ -68,7 +68,7 @@
 
     /* Gradient Text */
     .gradient-text {
-        @apply bg-gradient-to-r from-brand-green via-brand-teal to-brand-emerald bg-clip-text text-transparent;
+        @apply bg-gradient-to-r from-brand-green via-brand-accent to-brand-emerald bg-clip-text text-transparent;
     }
 
     .gradient-text-warm {
@@ -77,7 +77,7 @@
 
     /* Gradient Backgrounds */
     .gradient-bg-green {
-        @apply bg-gradient-to-br from-brand-green via-brand-teal/80 to-brand-emerald;
+        @apply bg-gradient-to-br from-brand-green via-brand-accent/80 to-brand-emerald;
     }
 
     .gradient-bg-warm {
@@ -88,14 +88,14 @@
         background: linear-gradient(135deg,
                 var(--color-brand-light) 0%,
                 rgba(229, 208, 195, 0.3) 50%,
-                rgba(20, 184, 166, 0.1) 100%);
+                rgba(202, 138, 4, 0.1) 100%);
     }
 
     /* Animated Gradients */
     .gradient-animated {
         background: linear-gradient(-45deg,
                 var(--color-brand-green),
-                var(--color-brand-teal),
+                var(--color-brand-accent),
                 var(--color-brand-emerald),
                 var(--color-brand-green));
         background-size: 400% 400%;
