@@ -172,11 +172,19 @@
 
     /* Card Styles */
     .card-glass {
-        @apply glass rounded-3xl p-8 shadow-xl hover-lift;
+        @apply bg-white/80 backdrop-blur-md border border-white/20 rounded-3xl p-8 shadow-xl transition-all duration-300 ease-out;
+    }
+
+    .card-glass:hover {
+        @apply -translate-y-2 shadow-2xl;
     }
 
     .card-gradient {
-        @apply bg-gradient-to-br from-white to-brand-clay/20 rounded-3xl p-8 shadow-xl border border-brand-clay/30 hover-lift;
+        @apply bg-gradient-to-br from-white to-brand-clay/20 rounded-3xl p-8 shadow-xl border border-brand-clay/30 transition-all duration-300 ease-out;
+    }
+
+    .card-gradient:hover {
+        @apply -translate-y-2 shadow-2xl;
     }
 
     /* Text Shadows */
