@@ -32,7 +32,7 @@ const c = content[currentLang];
                 <form name="booking" method="POST" data-netlify="true" class="space-y-6">
                     
                     <!-- Dates -->
-                    <div class="grid grid-cols-2 gap-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div class="space-y-2">
                             <label for="checkin" class="block text-sm font-bold text-brand-dark">{t('form.checkin')}</label>
                             <input type="date" id="checkin" name="checkin" required class="w-full px-4 py-3 rounded-lg bg-brand-light border-transparent focus:border-brand-green focus:bg-white focus:ring-0 transition-colors" />
@@ -43,31 +43,54 @@ const c = content[currentLang];
                         </div>
                     </div>
 
-                    <!-- Guests -->
-                    <div class="space-y-2">
-                         <label for="guests" class="block text-sm font-bold text-brand-dark">{t('form.guests')}</label>
-                         <select id="guests" name="guests" class="w-full px-4 py-3 rounded-lg bg-brand-light border-transparent focus:border-brand-green focus:bg-white focus:ring-0 transition-colors">
-                             <option value="1">1 Persoon</option>
-                             <option value="2" selected>2 Personen</option>
-                             <option value="3">3 Personen</option>
-                             <option value="4">4 Personen</option>
-                         </select>
-                    </div>
-
-                    <!-- Extras -->
-                    <div class="bg-brand-green/5 p-6 rounded-xl border border-brand-green/10">
-                        <label class="flex items-center gap-3 cursor-pointer group">
-                             <input type="checkbox" name="breakfast" value="yes" class="w-5 h-5 text-brand-green rounded border-brand-clay focus:ring-brand-green" />
-                             <span class="text-brand-dark font-medium group-hover:text-brand-green transition-colors">{t('form.extra.breakfast')}</span>
-                        </label>
-                    </div>
-
                     <!-- Personal Details -->
                     <div class="space-y-4">
                         <input type="text" name="name" placeholder={t('form.name')} required class="w-full px-4 py-3 rounded-lg bg-brand-light border-transparent focus:border-brand-green focus:bg-white focus:ring-0 transition-colors" />
-                        <input type="email" name="email" placeholder={t('form.email')} required class="w-full px-4 py-3 rounded-lg bg-brand-light border-transparent focus:border-brand-green focus:bg-white focus:ring-0 transition-colors" />
-                        <textarea name="remarks" rows="3" placeholder={t('form.remarks')} class="w-full px-4 py-3 rounded-lg bg-brand-light border-transparent focus:border-brand-green focus:bg-white focus:ring-0 transition-colors"></textarea>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                             <input type="email" name="email" placeholder={t('form.email')} required class="w-full px-4 py-3 rounded-lg bg-brand-light border-transparent focus:border-brand-green focus:bg-white focus:ring-0 transition-colors" />
+                             <input type="tel" name="phone" placeholder={t('form.phone')} required class="w-full px-4 py-3 rounded-lg bg-brand-light border-transparent focus:border-brand-green focus:bg-white focus:ring-0 transition-colors" />
+                        </div>
                     </div>
+
+                    <!-- Guest Details -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="space-y-2">
+                            <label for="guests" class="block text-sm font-bold text-brand-dark">{t('form.guests')}</label>
+                            <select id="guests" name="guests" class="w-full px-4 py-3 rounded-lg bg-brand-light border-transparent focus:border-brand-green focus:bg-white focus:ring-0 transition-colors">
+                                <option value="1">1</option>
+                                <option value="2" selected>2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                            </select>
+                        </div>
+                        <div class="space-y-2">
+                            <label for="age_oldest" class="block text-sm font-bold text-brand-dark">{t('form.age_oldest')}</label>
+                            <input type="number" id="age_oldest" name="age_oldest" min="18" required class="w-full px-4 py-3 rounded-lg bg-brand-light border-transparent focus:border-brand-green focus:bg-white focus:ring-0 transition-colors" />
+                        </div>
+                    </div>
+                
+                    <!-- Pet -->
+                    <div class="space-y-2">
+                        <span class="block text-sm font-bold text-brand-dark">{t('form.pet')}</span>
+                        <div class="flex gap-6">
+                             <label class="flex items-center gap-2 cursor-pointer">
+                                 <input type="radio" name="pet" value="yes" class="text-brand-green focus:ring-brand-green" />
+                                 <span>{t('form.yes')}</span>
+                             </label>
+                             <label class="flex items-center gap-2 cursor-pointer">
+                                 <input type="radio" name="pet" value="no" checked class="text-brand-green focus:ring-brand-green" />
+                                 <span>{t('form.no')}</span>
+                             </label>
+                        </div>
+                    </div>
+
+                    <!-- Remarks -->
+                    <textarea name="remarks" rows="3" placeholder={t('form.remarks')} class="w-full px-4 py-3 rounded-lg bg-brand-light border-transparent focus:border-brand-green focus:bg-white focus:ring-0 transition-colors"></textarea>
+                    
+                    <!-- Disclaimer -->
+                    <p class="text-sm text-brand-dark/70 italic text-center">
+                        {t('form.disclaimer')}
+                    </p>
 
                     <button type="submit" class="w-full bg-brand-green text-white font-bold text-lg py-4 rounded-full shadow-lg hover:bg-brand-dark hover:scale-[1.02] active:scale-95 transition-all duration-300">
                         {t('form.send')}
@@ -98,3 +121,32 @@ const c = content[currentLang];
   </div>
   <Footer />
 </Layout>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<script is:inline src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script is:inline src="https://npmcdn.com/flatpickr/dist/l10n/nl.js"></script>
+
+<script define:vars={{ currentLang }}>
+    document.addEventListener('DOMContentLoaded', function() {
+        const today = new Date();
+        
+        const checkinPicker = flatpickr("#checkin", {
+            locale: currentLang === 'nl' ? 'nl' : 'default',
+            minDate: "today",
+            dateFormat: "d-m-Y",
+            onChange: function(selectedDates, dateStr, instance) {
+                if (selectedDates.length > 0) {
+                    const minCheckoutDate = new Date(selectedDates[0]);
+                    minCheckoutDate.setDate(minCheckoutDate.getDate() + 1);
+                    checkoutPicker.set('minDate', minCheckoutDate);
+                }
+            }
+        });
+
+        const checkoutPicker = flatpickr("#checkout", {
+             locale: currentLang === 'nl' ? 'nl' : 'default',
+             minDate: new Date().fp_incr(1),
+             dateFormat: "d-m-Y"
+        });
+    });
+</script>

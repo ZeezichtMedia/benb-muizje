@@ -1,5 +1,6 @@
 // @ts-check
 // Configuration update to ensure React integration is loaded
+// Forced restart check
 import { defineConfig } from 'astro/config';
 
 import tailwindcss from '@tailwindcss/vite';

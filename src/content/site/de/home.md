@@ -1,5 +1,5 @@
 ---
-title: "Bed and Breakfast Zeeuwse Buurn"
+title: "Zeeuwse Buurn"
 description: "Entspannen Sie an der Küste Seelands. Ihr Ferienhaus in Renesse für Ruhe, Raum und Natur."
 hero:
   title: "Am Meer...\nbei Zeeuwse Buurn"

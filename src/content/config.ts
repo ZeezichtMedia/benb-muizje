@@ -37,12 +37,19 @@ const siteCollection = defineCollection({
         features: z.object({
             title: z.string(),
             subtitle: z.string(),
+            description: z.union([z.string(), z.array(z.string())]).optional(),
             items: z.array(z.object({
                 icon: z.string(),
                 title: z.string(),
                 desc: z.string(),
             })),
         }).optional(),
+        detailedSections: z.array(z.object({
+            title: z.string(),
+            text: z.string(),
+            image: z.string(),
+            align: z.enum(['left', 'right']).optional(),
+        })).optional(),
         location: z.object({
             title: z.string(),
             subtitle: z.string(),

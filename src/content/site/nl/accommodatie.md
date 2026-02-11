@@ -1,6 +1,6 @@
 ---
 title: "Accommodatie"
-description: "Details over ons vakantiehuisje, de faciliteiten en voorzieningen."
+description: "Details over onze recreatiewoning, de faciliteiten en voorzieningen."
 features:
   title: "Faciliteiten"
   subtitle: "Alles wat u nodig heeft voor een zorgeloze vakantie aan de Zeeuwse kust. Het huisje is sfeervol ingericht en van alle gemakken voorzien."
@@ -19,10 +19,23 @@ features:
       desc: "1 huisdier toegestaan (in overleg)"
     - icon: "beach"
       title: "Dichtbij Strand"
-      desc: "15 minuten lopen naar de duinen"
+      desc: "15 minuten lopen of in 5 minuten met de fiets naar het strand"
     - icon: "family"
       title: "Kindvriendelijk"
       desc: "Campingbedje en kinderstoel aanwezig"
+detailedSections:
+    - title: "Wonen & Koken"
+      text: "De zonnige woonkamer is ingericht met een drie- tweezits bank. Via de schuifpui heeft u direct toegang tot het zonnige terras met meubilair en zonnescherm. Er is een open keuken, voorzien van inductieplaat, oven/magnetron, vaatwasser en koelkast met vriesvak."
+      image: "/images/kitchen.jpg"
+      align: "left"
+    - title: "Slapen & Sanitair"
+      text: "Ons comfortabele huisje bevat twee slaapkamers met vier eenpersoons springboxmatrassen. In de gang treft u een aparte toilet en badkamer met douche, wastafel en opbergmeubel."
+      image: "/images/bedroom-1.jpg"
+      align: "right"
+    - title: "Comfort & Gemak"
+      text: "De recreatiewoning wordt verwarmd door middel van centrale verwarming."
+      image: "/images/terrace.jpg"
+      align: "left"
 gallery:
   - src: "/images/kitchen.jpg"
     alt: "Keuken"

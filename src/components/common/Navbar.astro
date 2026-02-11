@@ -11,13 +11,30 @@ const t = useTranslations(currentLang);
 const links = [
   { name: t('nav.home'), href: getRelativeLocaleUrl(currentLang, '/') },
   { name: t('nav.accommodation'), href: getRelativeLocaleUrl(currentLang, 'accommodatie') },
-  { name: t('nav.surroundings'), href: getRelativeLocaleUrl(currentLang, 'omgeving') },
+  { 
+    name: t('nav.surroundings'), 
+    href: getRelativeLocaleUrl(currentLang, 'omgeving'),
+    children: [
+      { name: 'Renesse', href: getRelativeLocaleUrl(currentLang, 'omgeving/renesse') },
+      { name: 'Handige links', href: getRelativeLocaleUrl(currentLang, 'omgeving/links') }
+    ]
+  },
   { name: t('nav.gallery'), href: getRelativeLocaleUrl(currentLang, 'gallerij') },
   { name: t('nav.contact'), href: getRelativeLocaleUrl(currentLang, 'contact') },
 ];
+
+interface Props {
+  forceOpaque?: boolean;
+}
+
+const { forceOpaque = false } = Astro.props;
 ---
 
-<nav class="fixed top-0 w-full z-50 transition-all duration-300 bg-transparent py-4" id="navbar">
+<nav 
+  class={`fixed top-0 w-full z-50 transition-all duration-300 ${forceOpaque ? 'bg-white/95 backdrop-blur-md shadow-lg py-2' : 'bg-transparent py-4'}`} 
+  id="navbar"
+  data-force-opaque={forceOpaque ? "true" : "false"}
+>
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="flex justify-between items-center h-20 transition-all duration-300" id="nav-container">
       <!-- Logo -->
@@ -34,13 +51,33 @@ const links = [
       <!-- Desktop Menu -->
       <div class="hidden md:flex items-center space-x-8">
         {links.map((link) => (
-          <a 
-            href={link.href} 
-            class="relative text-brand-dark font-medium hover:text-brand-green transition-colors font-heading text-lg group"
-          >
-            {link.name}
-            <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-brand-green group-hover:w-full transition-all duration-300"></span>
-          </a>
+          <div class="relative group">
+            <a 
+              href={link.href} 
+              class="relative text-brand-dark font-medium hover:text-brand-green transition-colors font-heading text-lg group flex items-center gap-1"
+            >
+              {link.name}
+              {link.children && (
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 transition-transform group-hover:rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                </svg>
+              )}
+              <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-brand-green group-hover:w-full transition-all duration-300"></span>
+            </a>
+            
+            {link.children && (
+              <div class="absolute top-full left-0 mt-2 w-48 bg-white rounded-xl shadow-xl py-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform translate-y-2 group-hover:translate-y-0 border border-brand-clay/10">
+                {link.children.map((child) => (
+                  <a 
+                    href={child.href}
+                    class="block px-4 py-2 text-brand-dark hover:text-brand-green hover:bg-brand-light/50 transition-colors font-medium"
+                  >
+                    {child.name}
+                  </a>
+                ))}
+              </div>
+            )}
+          </div>
         ))}
         <Button 
           href={getRelativeLocaleUrl(currentLang, 'boeken')} 
@@ -68,13 +105,28 @@ const links = [
   <div id="mobile-menu" class="hidden md:hidden bg-white/95 backdrop-blur-md border-t border-brand-clay/20 shadow-xl">
     <div class="px-4 pt-4 pb-6 space-y-2">
       {links.map((link, index) => (
-        <a 
-          href={link.href} 
-          class="block px-4 py-3 text-base font-medium text-brand-dark hover:text-brand-green hover:bg-brand-light/50 rounded-xl transition-all animate-slide-up"
-          style={`animation-delay: ${index * 50}ms`}
-        >
-          {link.name}
-        </a>
+        <div>
+          <a 
+            href={link.href} 
+            class="block px-4 py-3 text-base font-medium text-brand-dark hover:text-brand-green hover:bg-brand-light/50 rounded-xl transition-all animate-slide-up bg-opacity-20 flex justify-between items-center"
+            style={`animation-delay: ${index * 50}ms`}
+          >
+            {link.name}
+          </a>
+          {link.children && (
+             <div class="pl-4 space-y-1 mt-1 border-l-2 border-brand-green/20 ml-4">
+                {link.children.map((child, childIndex) => (
+                  <a 
+                    href={child.href}
+                    class="block px-4 py-2 text-sm font-medium text-brand-dark/80 hover:text-brand-green rounded-lg transition-all animate-slide-up"
+                    style={`animation-delay: ${(index * 50) + (childIndex + 1) * 30}ms`}
+                  >
+                    {child.name}
+                  </a>
+                ))}
+             </div>
+          )}
+        </div>
       ))}
       <div class="pt-2 animate-slide-up delay-300">
         <Button 
@@ -107,13 +159,15 @@ const links = [
     const currentScroll = window.scrollY;
     
     if (navbar && navContainer) {
-      if (currentScroll > 20) {
+      const isForceOpaque = navbar.dataset.forceOpaque === 'true';
+      
+      if (currentScroll > 20 || isForceOpaque) {
         // Scrolled state
         navbar.classList.remove('bg-transparent', 'py-4');
         navbar.classList.add('bg-white/95', 'backdrop-blur-md', 'shadow-lg', 'py-2');
         navContainer.classList.remove('h-20');
         navContainer.classList.add('h-16');
-      } else {
+      } else if (!isForceOpaque) {
         // Top state
         navbar.classList.add('bg-transparent', 'py-4');
         navbar.classList.remove('bg-white/95', 'backdrop-blur-md', 'shadow-lg', 'py-2');

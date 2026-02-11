@@ -11,7 +11,7 @@ location:
     - image: "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?ixlib=rb-4.0.3&auto=format&fit=crop&w=2071&q=80"
       title: "Natuur"
       desc: "Ontdek de prachtige natuurgebieden in de kop van Schouwen. Perfect voor fiets- en wandeltochten."
-    - image: "/images/surroundings.jpg"
+    - image: "/images/brouwersdam.png"
       title: "Brouwersdam"
-      desc: "De hotspot voor watersporters en zeehonden spotten."
+      desc: "De hotspot voor watersporters en zeehonden spotten. Geniet van de brede stranden en gezellige paviljoens."
 ---
