@@ -69,10 +69,10 @@ location:
     - image: "/images/beach.jpg"
       title: "Strand & Meer"
       desc: "Renesse hat einen 17km langen Sandstrand. Perfekt zum Sonnenbaden, Schwimmen und für lange Spaziergänge."
-    - image: "/images/surroundings.jpg"
+    - image: "/images/natuur-renesse.jpg"
       title: "Natur"
       desc: "Erkunden Sie die schönen Dünen und Wälder von Westerschouwen. Ideal zum Wandern und Radfahren."
-    - image: "/images/terrace.jpg"
+    - image: "/images/centrum-renesse.jpg"
       title: "Zentrum Renesse"
       desc: "Gemütliche Terrassen, schöne Geschäfte und gute Restaurants. Im Sommer gibt es viele Aktivitäten."
 ---

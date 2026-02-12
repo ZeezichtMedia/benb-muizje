@@ -5,7 +5,7 @@ hero:
   title: "Aan zee...\nbij Zeeuwse Buurn"
   subtitle: "Een heerlijke 4-persoons recreatiewoning op loopafstand van het strand. Geniet van rust, ruimte en de natuur."
   image: "/images/home-hero.jpg"
-  ctaPrimary: "Direct Reserveren"
+  ctaPrimary: "Reserveringsaanvraag"
   ctaSecondary: "Meer Info"
 about:
   title: "Welkom bij Zeeuwse Buurn"
@@ -69,10 +69,10 @@ location:
     - image: "/images/beach.jpg"
       title: "Strand & Zee"
       desc: "Renesse heeft een 17km lang zandstrand. Perfect om te zonnen, zwemmen en voor lange wandelingen."
-    - image: "/images/surroundings.jpg"
+    - image: "/images/natuur-renesse.jpg"
       title: "Natuur"
       desc: "Verken de prachtige duinen en bossen van Westerschouwen. Ideaal om te wandelen en fietsen."
-    - image: "/images/terrace.jpg"
+    - image: "/images/centrum-renesse.jpg"
       title: "Centrum Renesse"
       desc: "Gezellige terrasjes, leuke winkels en goede restaurants. In de zomer zijn er vele activiteiten."
 ---
