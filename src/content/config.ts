@@ -81,6 +81,12 @@ const siteCollection = defineCollection({
             includes: z.array(z.string()),
             policies: z.array(z.string()),
         }).optional(),
+        personalNote: z.object({
+            title: z.string(),
+            text: z.string(),
+            signoff: z.string(),
+            image: z.string().optional(),
+        }).optional(),
     }),
 });
 

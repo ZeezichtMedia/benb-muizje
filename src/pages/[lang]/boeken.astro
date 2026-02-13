@@ -3,6 +3,7 @@ import Layout from '../../layouts/Layout.astro';
 import Navbar from '../../components/common/Navbar.astro';
 import Footer from '../../components/common/Footer.astro';
 import { useTranslations } from '../../i18n/ui';
+import AvailabilityCalendar from '../../components/booking/AvailabilityCalendar';
 import { getRelativeLocaleUrl } from "astro:i18n";
 
 export function getStaticPaths() {
@@ -33,37 +34,50 @@ const c = content[currentLang];
             <p class="text-lg text-brand-dark/70 leading-relaxed animate-slide-up delay-100">{c.intro}</p>
         </div>
 
-        <div class="grid lg:grid-cols-2 gap-12 items-start max-w-6xl mx-auto">
-            <!-- Booking Form -->
-            <div class="bg-white p-8 md:p-10 rounded-3xl shadow-xl border border-brand-clay/20 animate-slide-up delay-200">
+        <div class="max-w-4xl mx-auto space-y-16">
+            
+            <!-- 1. Calendar (Full Width) -->
+            <div class="animate-slide-up delay-200">
+                <AvailabilityCalendar client:load lang={currentLang} />
+            </div>
+
+            <!-- 2. Booking Form -->
+            <div id="booking-form-container" class="bg-white p-8 md:p-12 rounded-[2.5rem] shadow-xl border border-brand-clay/20 animate-slide-up delay-300 relative overflow-hidden transition-all duration-500">
+                <h2 class="text-3xl font-heading font-bold text-brand-green mb-8 text-center">{c.title}</h2>
+
+                <!-- Selected Dates Summary -->
+                <div class="bg-brand-green/5 border border-brand-green/20 rounded-2xl p-6 mb-8 text-center">
+                    <p class="text-brand-dark/60 text-sm font-bold uppercase tracking-wide mb-2">
+                        {currentLang === 'nl' ? 'Geselecteerde Periode' : (currentLang === 'de' ? 'Gewählter Zeitraum' : 'Selected Period')}
+                    </p>
+                    <p id="date-summary" class="text-2xl md:text-3xl font-heading font-bold text-brand-green">
+                        -
+                    </p>
+                    <p class="text-xs text-brand-dark/50 mt-2 italic">
+                        {currentLang === 'nl' ? '(Kies eerst data in de kalender hierboven)' : (currentLang === 'de' ? '(Wählen Sie zuerst Daten im Kalender oben)' : '(First select dates in the calendar above)')}
+                    </p>
+                </div>
+
                 <form name="booking" method="POST" data-netlify="true" class="space-y-6">
                     
-                    <!-- Dates -->
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div class="space-y-2">
-                            <label for="checkin" class="block text-sm font-bold text-brand-dark">{t('form.checkin')}</label>
-                            <input type="date" id="checkin" name="checkin" required class="w-full px-4 py-3 rounded-lg bg-brand-light border-transparent focus:border-brand-green focus:bg-white focus:ring-0 transition-colors" />
-                        </div>
-                        <div class="space-y-2">
-                            <label for="checkout" class="block text-sm font-bold text-brand-dark">{t('form.checkout')}</label>
-                            <input type="date" id="checkout" name="checkout" required class="w-full px-4 py-3 rounded-lg bg-brand-light border-transparent focus:border-brand-green focus:bg-white focus:ring-0 transition-colors" />
-                        </div>
-                    </div>
+                    <!-- Hidden Date Inputs -->
+                    <input type="hidden" id="checkin" name="checkin" required />
+                    <input type="hidden" id="checkout" name="checkout" required />
 
                     <!-- Personal Details -->
                     <div class="space-y-4">
-                        <input type="text" name="name" placeholder={t('form.name')} required class="w-full px-4 py-3 rounded-lg bg-brand-light border-transparent focus:border-brand-green focus:bg-white focus:ring-0 transition-colors" />
+                        <input type="text" name="name" placeholder={t('form.name')} required class="w-full px-6 py-4 rounded-xl bg-brand-light border-transparent focus:border-brand-green focus:bg-white focus:ring-0 transition-colors text-lg" />
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                             <input type="email" name="email" placeholder={t('form.email')} required class="w-full px-4 py-3 rounded-lg bg-brand-light border-transparent focus:border-brand-green focus:bg-white focus:ring-0 transition-colors" />
-                             <input type="tel" name="phone" placeholder={t('form.phone')} required class="w-full px-4 py-3 rounded-lg bg-brand-light border-transparent focus:border-brand-green focus:bg-white focus:ring-0 transition-colors" />
+                             <input type="email" name="email" placeholder={t('form.email')} required class="w-full px-6 py-4 rounded-xl bg-brand-light border-transparent focus:border-brand-green focus:bg-white focus:ring-0 transition-colors text-lg" />
+                             <input type="tel" name="phone" placeholder={t('form.phone')} required class="w-full px-6 py-4 rounded-xl bg-brand-light border-transparent focus:border-brand-green focus:bg-white focus:ring-0 transition-colors text-lg" />
                         </div>
                     </div>
 
                     <!-- Guest Details -->
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div class="space-y-2">
-                            <label for="guests" class="block text-sm font-bold text-brand-dark">{t('form.guests')}</label>
-                            <select id="guests" name="guests" class="w-full px-4 py-3 rounded-lg bg-brand-light border-transparent focus:border-brand-green focus:bg-white focus:ring-0 transition-colors">
+                            <label for="guests" class="block text-sm font-bold text-brand-dark pl-2">{t('form.guests')}</label>
+                            <select id="guests" name="guests" class="w-full px-6 py-4 rounded-xl bg-brand-light border-transparent focus:border-brand-green focus:bg-white focus:ring-0 transition-colors text-lg appearance-none">
                                 <option value="1">1</option>
                                 <option value="2" selected>2</option>
                                 <option value="3">3</option>
@@ -71,57 +85,44 @@ const c = content[currentLang];
                             </select>
                         </div>
                         <div class="space-y-2">
-                            <label for="age_oldest" class="block text-sm font-bold text-brand-dark">{t('form.age_oldest')}</label>
-                            <input type="number" id="age_oldest" name="age_oldest" min="18" required class="w-full px-4 py-3 rounded-lg bg-brand-light border-transparent focus:border-brand-green focus:bg-white focus:ring-0 transition-colors" />
+                            <label for="age_oldest" class="block text-sm font-bold text-brand-dark pl-2">{t('form.age_oldest')}</label>
+                            <input type="number" id="age_oldest" name="age_oldest" min="18" required class="w-full px-6 py-4 rounded-xl bg-brand-light border-transparent focus:border-brand-green focus:bg-white focus:ring-0 transition-colors text-lg" />
                         </div>
                     </div>
                 
                     <!-- Pet -->
-                    <div class="space-y-2">
-                        <span class="block text-sm font-bold text-brand-dark">{t('form.pet')}</span>
-                        <div class="flex gap-6">
-                             <label class="flex items-center gap-2 cursor-pointer">
-                                 <input type="radio" name="pet" value="yes" class="text-brand-green focus:ring-brand-green" />
-                                 <span>{t('form.yes')}</span>
+                    <div class="space-y-3">
+                        <span class="block text-sm font-bold text-brand-dark pl-2">{t('form.pet')}</span>
+                        <div class="flex gap-6 pl-2">
+                             <label class="flex items-center gap-3 cursor-pointer group">
+                                 <div class="relative flex items-center">
+                                     <input type="radio" name="pet" value="yes" class="peer sr-only" />
+                                     <div class="w-6 h-6 border-2 border-brand-clay/30 rounded-full peer-checked:border-brand-green peer-checked:bg-brand-green transition-all"></div>
+                                 </div>
+                                 <span class="text-lg text-brand-dark group-hover:text-brand-green transition-colors">{t('form.yes')}</span>
                              </label>
-                             <label class="flex items-center gap-2 cursor-pointer">
-                                 <input type="radio" name="pet" value="no" checked class="text-brand-green focus:ring-brand-green" />
-                                 <span>{t('form.no')}</span>
+                             <label class="flex items-center gap-3 cursor-pointer group">
+                                 <div class="relative flex items-center">
+                                     <input type="radio" name="pet" value="no" checked class="peer sr-only" />
+                                     <div class="w-6 h-6 border-2 border-brand-clay/30 rounded-full peer-checked:border-brand-green peer-checked:bg-brand-green transition-all"></div>
+                                 </div>
+                                 <span class="text-lg text-brand-dark group-hover:text-brand-green transition-colors">{t('form.no')}</span>
                              </label>
                         </div>
                     </div>
 
                     <!-- Remarks -->
-                    <textarea name="remarks" rows="3" placeholder={t('form.remarks')} class="w-full px-4 py-3 rounded-lg bg-brand-light border-transparent focus:border-brand-green focus:bg-white focus:ring-0 transition-colors"></textarea>
+                    <textarea name="remarks" rows="3" placeholder={t('form.remarks')} class="w-full px-6 py-4 rounded-xl bg-brand-light border-transparent focus:border-brand-green focus:bg-white focus:ring-0 transition-colors text-lg"></textarea>
                     
                     <!-- Disclaimer -->
                     <p class="text-sm text-brand-dark/70 italic text-center">
                         {t('form.disclaimer')}
                     </p>
 
-                    <button type="submit" class="w-full bg-brand-green text-white font-bold text-lg py-4 rounded-full shadow-lg hover:bg-brand-dark hover:scale-[1.02] active:scale-95 transition-all duration-300">
+                    <button type="submit" class="w-full bg-brand-green text-white font-bold text-xl py-5 rounded-full shadow-lg hover:bg-brand-dark hover:scale-[1.02] active:scale-95 transition-all duration-300">
                         {t('form.send')}
                     </button>
                 </form>
-            </div>
-
-            <!-- Side Content (Image / Info) -->
-            <div class="space-y-8 animate-slide-up delay-300 hidden lg:block">
-                <div class="relative rounded-3xl overflow-hidden shadow-2xl h-[400px]">
-                    <img src="/images/bedroom-1.jpg" alt="Bedroom Preview" class="w-full h-full object-cover" />
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end p-8">
-                        <p class="text-white font-heading font-bold text-2xl">Start de dag goed.</p>
-                    </div>
-                </div>
-
-                <div class="bg-white p-8 rounded-3xl shadow-lg border border-brand-clay/20">
-                    <h3 class="text-xl font-bold text-brand-green mb-4">Waarom rechtstreeks boeken?</h3>
-                    <ul class="space-y-3 text-brand-dark/80">
-                        <li class="flex items-center gap-2">✓ Beste prijsgarantie</li>
-                        <li class="flex items-center gap-2">✓ Direct contact met de eigenaren</li>
-                        <li class="flex items-center gap-2">✓ Flexibele voorwaarden</li>
-                    </ul>
-                </div>
             </div>
         </div>
     </div>
@@ -129,35 +130,43 @@ const c = content[currentLang];
   <Footer />
 </Layout>
 
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-<script is:inline src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-<script is:inline src="https://npmcdn.com/flatpickr/dist/l10n/de.js"></script>
-<script is:inline src="https://npmcdn.com/flatpickr/dist/l10n/nl.js"></script>
-
 <script define:vars={{ currentLang }}>
     document.addEventListener('DOMContentLoaded', function() {
-        const today = new Date();
-        let locale = 'default';
-        if (currentLang === 'nl') locale = 'nl';
-        if (currentLang === 'de') locale = 'de';
-        
-        const checkinPicker = flatpickr("#checkin", {
-            locale: locale,
-            minDate: "today",
-            dateFormat: "d-m-Y",
-            onChange: function(selectedDates, dateStr, instance) {
-                if (selectedDates.length > 0) {
-                    const minCheckoutDate = new Date(selectedDates[0]);
-                    minCheckoutDate.setDate(minCheckoutDate.getDate() + 1);
-                    checkoutPicker.set('minDate', minCheckoutDate);
-                }
-            }
-        });
+        const formContainer = document.getElementById('booking-form-container');
+        const summaryElement = document.getElementById('date-summary');
+        const checkinInput = document.getElementById('checkin');
+        const checkoutInput = document.getElementById('checkout');
 
-        const checkoutPicker = flatpickr("#checkout", {
-             locale: locale,
-             minDate: new Date().fp_incr(1),
-             dateFormat: "d-m-Y"
-        });
+        function formatDate(dateStr) {
+            const date = new Date(dateStr);
+            return date.toLocaleDateString(currentLang === 'nl' ? 'nl-NL' : (currentLang === 'de' ? 'de-DE' : 'en-US'), {
+                day: 'numeric',
+                month: 'long',
+                year: 'numeric'
+            });
+        }
+
+        // Listen for calendar selection
+        window.addEventListener('booking-dates-selected', ((e) => {
+            const { start, end } = e.detail;
+            
+            if (start && end) {
+                const startObj = new Date(start);
+                const endObj = new Date(end);
+
+                const formatISO = (d) => {
+                    const offset = d.getTimezoneOffset();
+                    const local = new Date(d.getTime() - (offset*60*1000));
+                    return local.toISOString().split('T')[0];
+                };
+
+                checkinInput.value = formatISO(startObj);
+                checkoutInput.value = formatISO(endObj);
+
+                summaryElement.innerText = `${formatDate(start)}  —  ${formatDate(end)}`;
+
+                formContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }));
     });
 </script>
