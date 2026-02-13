@@ -9,6 +9,8 @@ import Features from '../components/home/Features.astro';
 import Location from '../components/home/Location.astro';
 
 // Fetch Dutch content explicitly for the root
+export const prerender = true;
+
 const pages = await getCollection('site');
 const page = pages.find(p => p.slug === 'nl/home');
 

@@ -10,7 +10,7 @@ import { useTranslations } from '../i18n/ui';
 
 const pages = await getCollection('site');
 const page = pages.find(p => p.slug === 'nl/accommodatie');
-
+export const prerender = true;
 
 if (!page) {
     throw new Error('NL Accommodation content not found');
