@@ -11,6 +11,9 @@ import Location from '../../components/home/Location.astro';
 import Highlights from '../../components/home/Highlights.astro';
 import Reviews from '../../components/home/Reviews.astro';
 import CTA from '../../components/home/CTA.astro';
+import { useTranslations } from '../../i18n/ui';
+
+export const prerender = true;
 
 export async function getStaticPaths() {
   const pages = await getCollection('site');

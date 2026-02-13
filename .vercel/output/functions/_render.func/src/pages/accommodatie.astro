@@ -1,36 +1,23 @@
 ---
 import { getCollection } from 'astro:content';
-import Layout from '../../layouts/Layout.astro';
-import Navbar from '../../components/common/Navbar.astro';
-import Footer from '../../components/common/Footer.astro';
-import Features from '../../components/home/Features.astro';
-import MasonryGallery from '../../components/common/MasonryGallery.astro';
-import Rates from '../../components/stay/Rates.astro';
+console.log('DEBUG: Accessing /accommodatie page');
+import Layout from '../layouts/Layout.astro';
+import Navbar from '../components/common/Navbar.astro';
+import Footer from '../components/common/Footer.astro';
+import Features from '../components/home/Features.astro';
+import MasonryGallery from '../components/common/MasonryGallery.astro';
+import { useTranslations } from '../i18n/ui';
 
-import { useTranslations } from '../../i18n/ui';
+const pages = await getCollection('site');
+const page = pages.find(p => p.slug === 'nl/accommodatie');
 
-export const prerender = true;
 
-export async function getStaticPaths() {
-  const pages = await getCollection('site');
-  
-  const paths = pages
-    .filter(page => {
-       const [lang, slug] = page.slug.split('/');
-       return lang !== 'nl' && ['accommodatie', 'accommodation', 'unterkunft'].includes(slug!);
-    })
-    .map(page => {
-      const [lang] = page.slug.split('/');
-      return { params: { lang }, props: { page } };
-    });
-
-  return paths;
+if (!page) {
+    throw new Error('NL Accommodation content not found');
 }
 
-const { lang } = Astro.params;
-const { page } = Astro.props;
 const { data } = page;
-const currentLang = (lang as 'nl' | 'en' | 'de') || 'nl';
+const currentLang = 'nl';
 const t = useTranslations(currentLang);
 ---
 
@@ -61,22 +48,20 @@ const t = useTranslations(currentLang);
     <!-- Intro Text -->
     <section class="py-20 md:py-32 max-w-4xl mx-auto px-4">
         <div class="relative bg-white rounded-3xl p-10 md:p-16 shadow-xl border border-brand-clay/10 text-center overflow-hidden group hover:shadow-2xl transition-all duration-500">
-             <!-- Decorative Background Element -->
+            <!-- Decorative Background Element -->
             <div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-brand-green via-brand-accent to-brand-green"></div>
             <div class="absolute -top-24 -right-24 w-48 h-48 bg-brand-light rounded-full opacity-50 blur-3xl group-hover:scale-150 transition-transform duration-700"></div>
             <div class="absolute -bottom-24 -left-24 w-48 h-48 bg-brand-accent/10 rounded-full opacity-50 blur-3xl group-hover:scale-150 transition-transform duration-700"></div>
-
-            <span class="font-['Caveat'] text-3xl text-brand-accent block mb-4 transform -rotate-1">
-                 {currentLang === 'en' ? 'Pure enjoyment' : currentLang === 'de' ? 'Genuss pur' : 'Puur genieten'}
-            </span>
+            
+            <span class="font-['Caveat'] text-3xl text-brand-accent block mb-4 transform -rotate-1">Puur genieten</span>
             <h2 class="text-3xl md:text-5xl font-bold text-brand-dark mb-8 font-heading relative z-10">
-                {currentLang === 'en' ? 'Oasis of peace near the coast' : currentLang === 'de' ? 'Oase der Ruhe in Küstennähe' : 'Oase van rust dichtbij de kust'}
+                Oase van rust dichtbij de kust
             </h2>
             <p class="text-xl text-brand-dark/70 leading-relaxed max-w-2xl mx-auto relative z-10">
                 {data.features?.subtitle}
             </p>
 
-             <!-- Decorative Icon -->
+            <!-- Decorative Icon -->
             <div class="mt-10 text-brand-green/20 flex justify-center">
                 <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-sun"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>
             </div>
@@ -97,9 +82,7 @@ const t = useTranslations(currentLang);
                          <div class="absolute inset-0 bg-brand-dark/10 group-hover:bg-transparent transition-colors duration-500"></div>
                     </div>
                     <div class="md:w-1/2 p-12 md:p-20 flex flex-col justify-center bg-brand-light/30">
-                        <span class="text-brand-green font-bold tracking-wider text-sm uppercase mb-4 opacity-0 transform translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500 delay-100">
-                             {currentLang === 'en' ? 'Discover' : currentLang === 'de' ? 'Entdecken' : 'Ontdek'}
-                        </span>
+                        <span class="text-brand-green font-bold tracking-wider text-sm uppercase mb-4 opacity-0 transform translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500 delay-100">Ontdek</span>
                         <h3 class="text-3xl md:text-4xl font-heading font-bold text-brand-dark mb-6">{section.title}</h3>
                         <p class="text-lg text-brand-dark/70 leading-relaxed">{section.text}</p>
                     </div>
@@ -115,18 +98,11 @@ const t = useTranslations(currentLang);
         </div>
     )}
 
-    <!-- Models & Rates Section - Note: Rates logic might need adjustment if generic -->
-     {/* Note: I'm reusing the structure but we might need to be careful with 'Rates' component if it expects specific NL data
-         However, the Rates component usually takes 'data' props. 
-         Let's stick to the manual implementation if Rates component is not flexible enough, 
-         BUT here I will inline the table similar to the NL page to ensure consistency and full control over styling.
-     */}
+    <!-- Rates Section -->
     {data.rates && (
         <section class="py-24 max-w-5xl mx-auto px-4 sm:px-6">
             <div class="text-center mb-16">
-                 <span class="font-['Caveat'] text-4xl text-brand-green block mb-2 transform -rotate-2">
-                    {currentLang === 'en' ? 'Transparent & Fair' : currentLang === 'de' ? 'Transparent & Fair' : 'Transparant & Eerlijk'}
-                 </span>
+                 <span class="font-['Caveat'] text-4xl text-brand-green block mb-2 transform -rotate-2">Transparant & Eerlijk</span>
                  <h2 class="text-4xl md:text-5xl font-heading font-black text-brand-dark">{data.rates.title}</h2>
                  {data.rates.subtitle && <p class="text-xl text-brand-dark/60 mt-4 max-w-2xl mx-auto">{data.rates.subtitle}</p>}
             </div>
@@ -136,9 +112,9 @@ const t = useTranslations(currentLang);
                     <table class="w-full text-left">
                         <thead class="bg-brand-green text-white">
                             <tr>
-                                <th class="p-6 text-lg font-heading font-bold">{currentLang === 'en' ? 'Period' : currentLang === 'de' ? 'Zeitraum' : 'Periode'}</th>
+                                <th class="p-6 text-lg font-heading font-bold">Periode</th>
                                 <th class="p-6 text-lg font-heading font-bold hidden md:table-cell">Details</th>
-                                <th class="p-6 text-lg font-heading font-bold text-right">{currentLang === 'en' ? 'Price' : currentLang === 'de' ? 'Preis' : 'Prijs'}</th>
+                                <th class="p-6 text-lg font-heading font-bold text-right">Prijs</th>
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-brand-clay/10">
@@ -160,7 +136,7 @@ const t = useTranslations(currentLang);
                     <div>
                         <h4 class="font-bold text-brand-dark text-lg mb-6 flex items-center gap-2">
                             <span class="w-2 h-2 rounded-full bg-brand-green"></span>
-                            {currentLang === 'en' ? 'Included' : currentLang === 'de' ? 'Inklusive' : 'Inclusief'}
+                            Inclusief
                         </h4>
                         <ul class="space-y-3">
                             {data.rates.includes.map((item: string) => (
@@ -174,7 +150,7 @@ const t = useTranslations(currentLang);
                     <div>
                          <h4 class="font-bold text-brand-dark text-lg mb-6 flex items-center gap-2">
                             <span class="w-2 h-2 rounded-full bg-brand-accent"></span>
-                             {currentLang === 'en' ? 'Additional Costs' : currentLang === 'de' ? 'Zusatzkosten' : 'Bijkomende kosten'}
+                            Bijkomende kosten
                         </h4>
                         <ul class="space-y-3">
                             {data.rates.additionalCosts.map((cost: any) => (
@@ -192,9 +168,7 @@ const t = useTranslations(currentLang);
 
     {data.gallery && (
       <div class="py-24 max-w-7xl mx-auto px-4">
-        <h2 class="text-center text-4xl font-heading font-black text-brand-green mb-16">
-             {currentLang === 'en' ? 'Impressions' : currentLang === 'de' ? 'Impressionen' : 'Een sfeerimpressie'}
-        </h2>
+        <h2 class="text-center text-4xl font-heading font-black text-brand-green mb-16">Een sfeerimpressie</h2>
         <MasonryGallery images={data.gallery} />
       </div>
     )}
