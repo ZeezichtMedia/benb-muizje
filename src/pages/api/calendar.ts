@@ -1,7 +1,7 @@
 
 import type { APIRoute } from 'astro';
 
-export const prerender = false;
+// export const prerender = false;
 
 export const GET: APIRoute = async ({ request }) => {
     const ICS_URL = 'https://www.dekalendervan.nl/export-8BF25526-18D2-18E2-6CF8-31D860C957B6.ics';
