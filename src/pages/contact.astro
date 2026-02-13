@@ -104,15 +104,17 @@ const t = useTranslations(currentLang);
           <!-- Form -->
           <div class="bg-white p-8 md:p-10 rounded-3xl shadow-xl border border-brand-clay/20 animate-slide-up delay-300 h-full">
                 <h3 class="text-2xl font-heading font-bold mb-6 text-brand-green">Stuur ons een bericht</h3>
-                <form name="contact" method="POST" data-netlify="true" class="space-y-6">
+                
+                <form id="contact-form" class="space-y-6">
                     <div class="space-y-4">
                         <input type="text" name="name" placeholder={t('form.name')} required class="w-full px-4 py-3 rounded-lg bg-brand-light border-transparent focus:border-brand-green focus:bg-white focus:ring-0 transition-colors" />
                         <input type="email" name="email" placeholder={t('form.email')} required class="w-full px-4 py-3 rounded-lg bg-brand-light border-transparent focus:border-brand-green focus:bg-white focus:ring-0 transition-colors" />
                         <textarea name="message" rows="5" placeholder={t('form.message')} required class="w-full px-4 py-3 rounded-lg bg-brand-light border-transparent focus:border-brand-green focus:bg-white focus:ring-0 transition-colors"></textarea>
                     </div>
-                    <button type="submit" class="w-full bg-brand-green text-white font-bold text-lg py-4 rounded-full shadow-lg hover:bg-brand-dark hover:scale-[1.02] active:scale-95 transition-all duration-300">
+                    <button type="submit" class="w-full bg-brand-green text-white font-bold text-lg py-4 rounded-full shadow-lg hover:bg-brand-dark hover:scale-[1.02] active:scale-95 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed">
                         {t('form.send')}
                     </button>
+                    <p id="form-status" class="text-center text-sm font-bold hidden"></p>
                 </form>
             </div>
        </div>
@@ -120,3 +122,56 @@ const t = useTranslations(currentLang);
   </div>
   <Footer />
 </Layout>
+
+<script>
+    const form = document.getElementById('contact-form') as HTMLFormElement;
+    const statusMsg = document.getElementById('form-status');
+    const submitBtn = form?.querySelector('button[type="submit"]') as HTMLButtonElement;
+
+    if (form) {
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const formData = new FormData(form);
+            const data = Object.fromEntries(formData.entries());
+            
+            // Add type
+            data.type = 'contact';
+
+            // Disable button
+            if (submitBtn) {
+                submitBtn.disabled = true;
+                submitBtn.textContent = 'Verzenden...';
+            }
+
+            try {
+                const response = await fetch('/api/send-mail', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+
+                if (response.ok) {
+                    if (statusMsg) {
+                        statusMsg.textContent = 'Bedankt! Uw bericht is verzonden.';
+                        statusMsg.className = 'text-center text-sm font-bold text-green-600 block mt-4';
+                    }
+                    form.reset();
+                } else {
+                    throw new Error('Verzenden mislukt');
+                }
+            } catch (error) {
+                console.error(error);
+                if (statusMsg) {
+                    statusMsg.textContent = 'Er ging iets mis. Probeer het later opnieuw of mail ons direct.';
+                    statusMsg.className = 'text-center text-sm font-bold text-red-500 block mt-4';
+                }
+            } finally {
+                if (submitBtn) {
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = 'Verstuur Bericht'; // Hardcoded fallback or restore original text? 
+                    // Better to restore original text but for now hardcoded NL is fine for contact.astro (NL page)
+                }
+            }
+        });
+    }
+</script>

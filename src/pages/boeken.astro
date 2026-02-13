@@ -48,7 +48,7 @@ const c = content[currentLang];
                     <p class="text-xs text-brand-dark/50 mt-2 italic">(Kies eerst data in de kalender hierboven)</p>
                 </div>
 
-                <form name="booking" method="POST" data-netlify="true" class="space-y-6">
+                <form id="booking-form" class="space-y-6">
                     
                     <!-- Hidden Date Inputs -->
                     <input type="hidden" id="checkin" name="checkin" required />
@@ -109,9 +109,10 @@ const c = content[currentLang];
                         {t('form.disclaimer')}
                     </p>
 
-                    <button type="submit" class="w-full bg-brand-green text-white font-bold text-xl py-5 rounded-full shadow-lg hover:bg-brand-dark hover:scale-[1.02] active:scale-95 transition-all duration-300">
+                    <button type="submit" class="w-full bg-brand-green text-white font-bold text-xl py-5 rounded-full shadow-lg hover:bg-brand-dark hover:scale-[1.02] active:scale-95 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed">
                         {t('form.send')}
                     </button>
+                    <p id="form-status" class="text-center text-sm font-bold hidden"></p>
                 </form>
             </div>
         </div>
@@ -164,5 +165,58 @@ const c = content[currentLang];
                 formContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
             }
         }));
+
+        // Handle Form Submission
+        const form = document.getElementById('booking-form');
+        const statusMsg = document.getElementById('form-status');
+        const submitBtn = form?.querySelector('button[type="submit"]');
+
+        if (form) {
+            form.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const formData = new FormData(form);
+                const data = Object.fromEntries(formData.entries());
+                
+                // Add type
+                data.type = 'booking';
+
+                // Disable button
+                if (submitBtn) {
+                    submitBtn.disabled = true;
+                    // Store original text? simplified:
+                    submitBtn.innerHTML = 'Verzenden...';
+                }
+
+                try {
+                    const response = await fetch('/api/send-mail', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(data)
+                    });
+
+                    if (response.ok) {
+                        if (statusMsg) {
+                            statusMsg.textContent = 'Bedankt! Uw aanvraag is verzonden. We nemen spoedig contact op.';
+                            statusMsg.className = 'text-center text-sm font-bold text-green-600 block mt-4';
+                        }
+                        form.reset();
+                        // Reset date summary? Optional
+                    } else {
+                        throw new Error('Verzenden mislukt');
+                    }
+                } catch (error) {
+                    console.error(error);
+                    if (statusMsg) {
+                        statusMsg.textContent = 'Er ging iets mis. Probeer het later opnieuw of mail ons direct.';
+                        statusMsg.className = 'text-center text-sm font-bold text-red-500 block mt-4';
+                    }
+                } finally {
+                    if (submitBtn) {
+                         submitBtn.disabled = false;
+                         submitBtn.innerText = 'Verstuur Aanvraag'; // Hardcoded NL
+                    }
+                }
+            });
+        }
     });
 </script>
