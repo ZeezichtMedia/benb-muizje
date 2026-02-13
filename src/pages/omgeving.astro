@@ -10,8 +10,6 @@ const pages = await getCollection('site');
 const page = pages.find(p => p.slug === 'nl/omgeving');
 export const prerender = true;
 
-if (!page) {const prerender = true;
-
 if (!page) {
     throw new Error('NL Surroundings page not found');
 }

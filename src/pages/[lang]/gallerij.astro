@@ -7,8 +7,6 @@ import MasonryGallery from '../../components/common/MasonryGallery.astro';
 
 import { useTranslations } from '../../i18n/ui';
 
-export const prerender = true;
-
 export async function getStaticPaths() {
   const pages = await getCollection('site');
   

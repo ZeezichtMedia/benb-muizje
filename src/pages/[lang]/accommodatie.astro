@@ -9,8 +9,6 @@ import Rates from '../../components/stay/Rates.astro';
 
 import { useTranslations } from '../../i18n/ui';
 
-export const prerender = true;
-
 export async function getStaticPaths() {
   const pages = await getCollection('site');
   

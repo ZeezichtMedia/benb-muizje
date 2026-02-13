@@ -6,8 +6,6 @@ import { useTranslations } from '../../i18n/ui';
 import AvailabilityCalendar from '../../components/booking/AvailabilityCalendar';
 import { getRelativeLocaleUrl } from "astro:i18n";
 
-export const prerender = true;
-
 export function getStaticPaths() {
   const languages = ['en', 'de'];
   return languages.map((lang) => ({ params: { lang } }));
