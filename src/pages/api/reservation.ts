@@ -47,6 +47,27 @@ export const POST: APIRoute = async ({ request }) => {
             throw new Error('Failed to send admin email');
         }
 
+        // Send confirmation email to user
+        const userEmailContent = `
+          <h1>Bedankt voor uw reserveringsaanvraag</h1>
+          <p>Beste ${name},</p>
+          <p>We hebben uw aanvraag voor een verblijf bij Zeeuwse Buurn in goede orde ontvangen.</p>
+          
+          <h2>Overzicht van uw aanvraag:</h2>
+          <ul>
+            <li><strong>Periode:</strong> ${checkin} t/m ${checkout}</li>
+            <li><strong>Aantal personen:</strong> ${guests}</li>
+            <li><strong>Huisdier:</strong> ${pet === 'yes' ? 'Ja' : 'Nee'}</li>
+          </ul>
+
+          <p>We gaan de beschikbaarheid controleren en nemen zo spoedig mogelijk contact met u op om de reservering definitief te maken.</p>
+          <br>
+          <p>Met vriendelijke groet,</p>
+          <p><strong>Zeeuwse Buurn</strong></p>
+        `;
+
+        await sendEmail(email, 'Ontvangstbevestiging reservering | Zeeuwse Buurn', userEmailContent);
+
         return new Response(JSON.stringify({ success: true }), { status: 200 });
 
     } catch (error) {

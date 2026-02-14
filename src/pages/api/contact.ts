@@ -32,14 +32,17 @@ export const POST: APIRoute = async ({ request }) => {
             throw new Error('Failed to send admin email');
         }
 
-        // Send confirmation email to user (optional, but good practice)
-        /*
+        // Send confirmation email to user
         const userEmailContent = `
-          <h1>Thank you for contacting Zeeuwse Buurn</h1>
-          <p>We have received your message and will get back to you shortly.</p>
+          <h1>Bedankt voor uw bericht</h1>
+          <p>Beste ${name},</p>
+          <p>We hebben uw bericht in goede orde ontvangen en nemen zo spoedig mogelijk contact met u op.</p>
+          <br>
+          <p>Met vriendelijke groet,</p>
+          <p><strong>Zeeuwse Buurn</strong></p>
         `;
-        await sendEmail(email, 'We received your message', userEmailContent);
-        */
+
+        await sendEmail(email, 'Bevestiging van uw bericht | Zeeuwse Buurn', userEmailContent);
 
         return new Response(JSON.stringify({ success: true }), { status: 200 });
 
