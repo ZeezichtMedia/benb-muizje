@@ -19,26 +19,26 @@ export const POST: APIRoute = async ({ request }) => {
 
         // Send email to admin
         const adminEmailContent = `
-      <h1>New Reservation Request</h1>
-      <p><strong>Period:</strong> ${checkin} to ${checkout}</p>
+      <h1>Nieuwe Reserveringsaanvraag</h1>
+      <p><strong>Periode:</strong> ${checkin} t/m ${checkout}</p>
       
-      <h2>Guest Details</h2>
-      <p><strong>Name:</strong> ${name}</p>
-      <p><strong>Email:</strong> ${email}</p>
-      <p><strong>Phone:</strong> ${phone}</p>
+      <h2>Gastgegevens</h2>
+      <p><strong>Naam:</strong> ${name}</p>
+      <p><strong>E-mail:</strong> ${email}</p>
+      <p><strong>Telefoon:</strong> ${phone}</p>
       
-      <h2>Stay Details</h2>
-      <p><strong>Guests:</strong> ${guests}</p>
-      <p><strong>Age of Oldest Guest:</strong> ${age_oldest}</p>
-      <p><strong>Pet:</strong> ${pet === 'yes' ? 'Yes' : 'No'}</p>
+      <h2>Verblijf details</h2>
+      <p><strong>Aantal personen:</strong> ${guests}</p>
+      <p><strong>Leeftijd oudste gast:</strong> ${age_oldest}</p>
+      <p><strong>Huisdier:</strong> ${pet === 'yes' ? 'Ja' : 'Nee'}</p>
       
-      <h2>Remarks</h2>
-      <p>${remarks ? remarks.replace(/\n/g, '<br>') : 'None'}</p>
+      <h2>Opmerkingen</h2>
+      <p>${remarks ? remarks.replace(/\n/g, '<br>') : 'Geen'}</p>
     `;
 
         const adminResult = await sendEmail(
             import.meta.env.MAIL_FROM, // Send to self/admin
-            `New Reservation: ${name} (${checkin} - ${checkout})`,
+            `Nieuwe Reservering: ${name} (${checkin} - ${checkout})`,
             adminEmailContent,
             email // Reply to the sender
         );

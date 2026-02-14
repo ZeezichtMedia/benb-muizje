@@ -14,16 +14,16 @@ export const POST: APIRoute = async ({ request }) => {
 
         // Send email to admin
         const adminEmailContent = `
-      <h1>New Contact Form Submission</h1>
-      <p><strong>Name:</strong> ${name}</p>
-      <p><strong>Email:</strong> ${email}</p>
-      <p><strong>Message:</strong></p>
+      <h1>Nieuw Contactformulier Bericht</h1>
+      <p><strong>Naam:</strong> ${name}</p>
+      <p><strong>E-mail:</strong> ${email}</p>
+      <p><strong>Bericht:</strong></p>
       <p>${message.replace(/\n/g, '<br>')}</p>
     `;
 
         const adminResult = await sendEmail(
             import.meta.env.MAIL_FROM, // Send to self/admin
-            `New Contact from ${name}`,
+            `Nieuw bericht van ${name}`,
             adminEmailContent,
             email // Reply to the sender
         );
