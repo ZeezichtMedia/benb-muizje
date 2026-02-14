@@ -28,3 +28,6 @@ pnpm-debug.log*
 
 # Vercel
 .vercel
+# Test scripts
+test-smtp.js
+*.log
