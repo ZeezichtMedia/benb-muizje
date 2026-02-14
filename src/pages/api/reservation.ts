@@ -17,10 +17,22 @@ export const POST: APIRoute = async ({ request }) => {
             return new Response(JSON.stringify({ error: 'Missing required fields' }), { status: 400 });
         }
 
+        const formatDate = (dateStr: string) => {
+            if (!dateStr) return '';
+            return new Date(dateStr).toLocaleDateString('nl-NL', {
+                day: 'numeric',
+                month: 'long',
+                year: 'numeric'
+            });
+        };
+
+        const checkinDate = formatDate(checkin);
+        const checkoutDate = formatDate(checkout);
+
         // Send email to admin
         const adminEmailContent = `
       <h1>Nieuwe Reserveringsaanvraag</h1>
-      <p><strong>Periode:</strong> ${checkin} t/m ${checkout}</p>
+      <p><strong>Periode:</strong> ${checkinDate} t/m ${checkoutDate}</p>
       
       <h2>Gastgegevens</h2>
       <p><strong>Naam:</strong> ${name}</p>
@@ -38,7 +50,7 @@ export const POST: APIRoute = async ({ request }) => {
 
         const adminResult = await sendEmail(
             import.meta.env.MAIL_FROM, // Send to self/admin
-            `Nieuwe Reservering: ${name} (${checkin} - ${checkout})`,
+            `Nieuwe Reservering: ${name} (${checkinDate} - ${checkoutDate})`,
             adminEmailContent,
             email // Reply to the sender
         );
@@ -55,7 +67,7 @@ export const POST: APIRoute = async ({ request }) => {
           
           <h2>Overzicht van uw aanvraag:</h2>
           <ul>
-            <li><strong>Periode:</strong> ${checkin} t/m ${checkout}</li>
+            <li><strong>Periode:</strong> ${checkinDate} t/m ${checkoutDate}</li>
             <li><strong>Aantal personen:</strong> ${guests}</li>
             <li><strong>Huisdier:</strong> ${pet === 'yes' ? 'Ja' : 'Nee'}</li>
           </ul>
