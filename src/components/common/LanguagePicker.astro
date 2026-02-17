@@ -11,13 +11,14 @@ const languages = {
 };
 ---
 
-<div class="relative group ml-4 z-50">
-  <button class="flex items-center space-x-1 text-brand-green hover:text-brand-dark font-bold focus:outline-none bg-brand-light/50 px-3 py-2 rounded-full transition-colors">
+<div class="relative ml-4 z-50 lang-picker">
+  <button class="lang-btn flex items-center space-x-1 text-brand-green hover:text-brand-dark font-bold focus:outline-none bg-brand-light/50 px-3 py-2 rounded-full transition-colors">
     <span>{languages[currentLang as keyof typeof languages]}</span>
-    <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+    <svg class="w-4 h-4 ml-1 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
   </button>
-  <div class="absolute right-0 mt-2 w-24 bg-white rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 border border-brand-clay/20">
-    <div class="py-1">
+  
+  <!-- Dropdown: Hidden by default, toggled via script -->
+  <div class="lang-menu absolute right-0 mt-2 w-24 bg-white rounded-md shadow-lg hidden transition-all duration-200 border border-brand-clay/20 transform origin-top-right">
     <div class="py-1">
       {Object.entries(languages).map(([code, label]) => {
         // Calculate the path relative to the current locale
@@ -38,6 +39,50 @@ const languages = {
         );
       })}
     </div>
-    </div>
   </div>
 </div>
+
+<script>
+  // Handle language picker interactions
+  document.addEventListener('DOMContentLoaded', () => {
+    const pickers = document.querySelectorAll('.lang-picker');
+
+    pickers.forEach(picker => {
+      const btn = picker.querySelector('.lang-btn');
+      const menu = picker.querySelector('.lang-menu');
+      const icon = btn?.querySelector('svg');
+
+      if (btn && menu) {
+        btn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          
+          // Close other open pickers first
+          pickers.forEach(p => {
+             if (p !== picker) {
+                p.querySelector('.lang-menu')?.classList.add('hidden');
+                p.querySelector('svg')?.classList.remove('rotate-180');
+             }
+          });
+
+          // Toggle current
+          const isOpen = !menu.classList.contains('hidden');
+          if (isOpen) {
+             menu.classList.add('hidden');
+             icon?.classList.remove('rotate-180');
+          } else {
+             menu.classList.remove('hidden');
+             icon?.classList.add('rotate-180');
+          }
+        });
+      }
+    });
+
+    // Close on click outside
+    document.addEventListener('click', (e) => {
+       if (!(e.target as Element).closest('.lang-picker')) {
+          document.querySelectorAll('.lang-menu').forEach(menu => menu.classList.add('hidden'));
+          document.querySelectorAll('.lang-picker svg').forEach(icon => icon.classList.remove('rotate-180'));
+       }
+    });
+  });
+</script>

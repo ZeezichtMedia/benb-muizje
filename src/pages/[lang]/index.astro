@@ -12,24 +12,20 @@ import Highlights from '../../components/home/Highlights.astro';
 import Reviews from '../../components/home/Reviews.astro';
 import CTA from '../../components/home/CTA.astro';
 
-export async function getStaticPaths() {
-  const pages = await getCollection('site');
-  
-  const paths = pages
-    .filter(page => {
-      const parts = page.slug.split('/');
-      return parts.length === 2 && parts[1] === 'home' && parts[0] !== 'nl';
-    })
-    .map(page => {
-      const [lang] = page.slug.split('/');
-      return { params: { lang }, props: { page } };
-    });
+const { lang } = Astro.params;
+const currentLang = lang as 'nl' | 'en' | 'de';
 
-  return paths;
+if (!['en', 'de'].includes(currentLang)) {
+  return Astro.redirect('/');
 }
 
-const { lang } = Astro.params;
-const { page } = Astro.props;
+const pages = await getCollection('site');
+const page = pages.find(p => p.slug === `${currentLang}/home`);
+
+if (!page) {
+  return Astro.redirect('/');
+}
+
 const { data } = page;
 ---
 

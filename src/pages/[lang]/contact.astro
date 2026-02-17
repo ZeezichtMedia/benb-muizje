@@ -6,26 +6,22 @@ import Footer from '../../components/common/Footer.astro';
 import { MapPin, Phone, Mail } from 'lucide-react';
 import { useTranslations } from '../../i18n/ui';
 
-export async function getStaticPaths() {
-  const pages = await getCollection('site');
-  
-  const paths = pages
-    .filter(page => {
-       const [lang, slug] = page.slug.split('/');
-       return lang !== 'nl' && ['contact', 'kontakt'].includes(slug!);
-    })
-    .map(page => {
-      const [lang] = page.slug.split('/');
-      return { params: { lang }, props: { page } };
-    });
+const { lang } = Astro.params;
+const currentLang = (lang as 'nl' | 'en' | 'de') || 'nl';
 
-  return paths;
+if (!['en', 'de'].includes(currentLang)) {
+  return Astro.redirect('/contact');
 }
 
-const { lang } = Astro.params;
-const { page } = Astro.props;
+const slugMap: Record<string, string> = { en: 'contact', de: 'kontakt' };
+const pages = await getCollection('site');
+const page = pages.find(p => p.slug === `${currentLang}/${slugMap[currentLang]}`);
+
+if (!page) {
+  return Astro.redirect('/');
+}
+
 const { data } = page;
-const currentLang = (lang as 'nl' | 'en' | 'de') || 'nl';
 const t = useTranslations(currentLang);
 ---
 
