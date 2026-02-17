@@ -1,0 +1,208 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import Navbar from '../../../components/common/Navbar.astro';
+import Footer from '../../../components/common/Footer.astro';
+import { 
+    MapPin,
+    Ship,
+    Waves, 
+    ExternalLink,
+    Umbrella
+} from 'lucide-react';
+
+export async function getStaticPaths() {
+  return [
+    { params: { lang: 'en' } },
+    { params: { lang: 'de' } },
+  ];
+}
+
+const { lang } = Astro.params;
+const currentLang = (lang as 'en' | 'de') || 'en';
+
+const translations = {
+    en: {
+        title: "Useful Links & Tips",
+        subtitle: "Discover more",
+        intro: "We have collected the best activities, useful information and best tips for you to make your stay even more pleasant.",
+        metaDescription: "An overview of useful websites, activities and sights in the area of Renesse.",
+        categories: {
+            info: {
+                title: "Information about the area",
+                links: [
+                    { name: "Renesse.com", url: "https://renesse.com/en/" },
+                    { name: "On Schouwen-Duiveland", url: "https://www.opschouwenduiveland.nl/en/" },
+                    { name: "Zierikzee Monument City", url: "https://zierikzee-monumentenstad.nl/" },
+                    { name: "Deltapark Neeltje Jans", url: "https://www.neeltjejans.nl/en/" },
+                    { name: "Cycling routes Renesse", url: "https://www.route.nl/routes?q=renesse" },
+                    { name: "Beach weather & Tides", url: "https://renesse.com/en/" },
+                ]
+            },
+            cruises: {
+                title: "Cruises & Safaris",
+                links: [
+                    { name: "Frisia Cruises Zierikzee", url: "https://www.frisiarondvaarten.nl/" },
+                    { name: "Ms. Onrust (Nature cruise)", url: "https://ms-onrust.nl/" },
+                    { name: "Cruise Neeltje Jans", url: "https://www.neeltjejans.nl/en/boat-trip/" },
+                    { name: "Ride with the RTM tram", url: "https://www.rtm-ouddorp.nl/en" },
+                    { name: "Rib safari Brouwersdam", url: "https://www.dolphin-ribs.com" },
+                ]
+            },
+            watersports: {
+                title: "Watersports",
+                links: [
+                    { name: "Brouwersdam Watersports", url: "https://www.brouwersdam.nl/en/" },
+                    { name: "Sail & Surf Center", url: "https://www.brouwersdam.nl/en/" },
+                    { name: "Sailing from Zierikzee", url: "https://www.meezeilenzeeland.nl/" },
+                    { name: "Diving Center De Witte Boulevard", url: "https://duikcentrumzeeland.nl/" },
+                ]
+            },
+            rain: {
+                title: "Activities for rainy days",
+                description: "It doesn't happen often on Schouwen, but just in case:",
+                links: [
+                    { name: "Aqua Mundo Port Zélande", url: "https://www.centerparcs.com/gb-en/netherlands/fp_PZ_vacation-park-port-zelande/aqua-mundo" },
+                    { name: "Casino Admiral (Funtastic)", url: "https://www.casinoadmiral.nl/" },
+                    { name: "Iguana Reptile Zoo", url: "https://iguana.nl/" },
+                    { name: "Pathé Vlissingen", url: "https://www.pathe.nl/nl/bioscopen/pathe-vlissingen" },
+                    { name: "Museum De Burghse Schoole", url: "https://www.burghseschoole.nl/" },
+                    { name: "Sports Center Huis van Burgh", url: "https://huisvanburgh.nl/" },
+                ]
+            }
+        }
+    },
+    de: {
+        title: "Nützliche Links & Tipps",
+        subtitle: "Mehr entdecken",
+        intro: "Wir haben die besten Aktivitäten, nützliche Informationen und besten Tipps für Sie gesammelt, um Ihren Aufenthalt noch angenehmer zu gestalten.",
+        metaDescription: "Eine Übersicht nützlicher Websites, Aktivitäten und Sehenswürdigkeiten in der Umgebung von Renesse.",
+        categories: {
+            info: {
+                title: "Informationen über die Umgebung",
+                links: [
+                    { name: "Renesse.com", url: "https://renesse.com/de/" },
+                    { name: "Auf Schouwen-Duiveland", url: "https://www.opschouwenduiveland.nl/de/" },
+                    { name: "Zierikzee Denkmalstadt", url: "https://zierikzee-monumentenstad.nl/" },
+                    { name: "Deltapark Neeltje Jans", url: "https://www.neeltjejans.nl/de/" },
+                    { name: "Fahrradrouten Renesse", url: "https://www.route.nl/routes?q=renesse" },
+                    { name: "Strandwetter & Gezeiten", url: "https://renesse.com/de/" },
+                ]
+            },
+            cruises: {
+                title: "Rundfahrten & Safaris",
+                links: [
+                    { name: "Frisia Rundfahrten Zierikzee", url: "https://www.frisiarondvaarten.nl/" },
+                    { name: "Ms. Onrust (Naturrundfahrt)", url: "https://ms-onrust.nl/" },
+                    { name: "Rundfahrt Neeltje Jans", url: "https://www.neeltjejans.nl/de/rundfahrt/" },
+                    { name: "Fahrt mit der RTM-Straßenbahn", url: "https://www.rtm-ouddorp.nl/de" },
+                    { name: "Rib safari Brouwersdam", url: "https://www.dolphin-ribs.com" },
+                ]
+            },
+            watersports: {
+                title: "Wassersport",
+                links: [
+                    { name: "Brouwersdam Wassersport", url: "https://www.brouwersdam.nl/de/" },
+                    { name: "Segel- & Surfzentrum", url: "https://www.brouwersdam.nl/de/" },
+                    { name: "Mitsegeln ab Zierikzee", url: "https://www.meezeilenzeeland.nl/" },
+                    { name: "Tauchzentrum De Witte Boulevard", url: "https://duikcentrumzeeland.nl/" },
+                ]
+            },
+            rain: {
+                title: "Aktivitäten bei Regen",
+                description: "Es kommt auf Schouwen nicht oft vor, aber für den Fall der Fälle:",
+                links: [
+                    { name: "Aqua Mundo Port Zélande", url: "https://www.centerparcs.de/de-de/niederlande/fp_PZ_ferienpark-port-zelande/aqua-mundo" },
+                    { name: "Casino Admiral (Funtastic)", url: "https://www.casinoadmiral.nl/" },
+                    { name: "Iguana Reptilienzoo", url: "https://iguana.nl/" },
+                    { name: "Pathé Vlissingen", url: "https://www.pathe.nl/nl/bioscopen/pathe-vlissingen" },
+                    { name: "Museum De Burghse Schoole", url: "https://www.burghseschoole.nl/" },
+                    { name: "Sportzentrum Huis van Burgh", url: "https://huisvanburgh.nl/" },
+                ]
+            }
+        }
+    }
+};
+
+const t = translations[currentLang];
+
+const categories = [
+    {
+        title: t.categories.info.title,
+        icon: MapPin,
+        color: "bg-blue-50 text-blue-600", 
+        links: t.categories.info.links
+    },
+    {
+        title: t.categories.cruises.title,
+        icon: Ship,
+        color: "bg-teal-50 text-teal-600",
+        links: t.categories.cruises.links
+    },
+    {
+        title: t.categories.watersports.title,
+        icon: Waves,
+        color: "bg-cyan-50 text-cyan-600",
+        links: t.categories.watersports.links
+    },
+    {
+        title: t.categories.rain.title,
+        icon: Umbrella,
+        color: "bg-indigo-50 text-indigo-600",
+        description: t.categories.rain.description,
+        links: t.categories.rain.links
+    }
+];
+---
+
+<Layout title={`${t.title} - Zeeuwse Buurn`} description={t.metaDescription} lang={currentLang}>
+  <Navbar />
+  <main class="pt-24 md:pt-36 bg-brand-light min-h-screen">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        
+        <!-- Header -->
+        <div class="text-center max-w-3xl mx-auto mb-16 animate-slide-up">
+            <span class="font-['Caveat'] text-4xl text-brand-green block mb-4">{t.subtitle}</span>
+            <h1 class="text-4xl md:text-5xl font-heading font-black text-brand-dark mb-6">{t.title}</h1>
+            <p class="text-lg text-brand-dark/70 font-medium">
+                {t.intro}
+            </p>
+        </div>
+
+        <!-- Links Grid -->
+        <div class="grid md:grid-cols-2 gap-8 masonry-grid">
+            {categories.map((category, index) => (
+                <div class={`bg-white rounded-3xl p-8 shadow-xl border border-brand-clay/10 hover:shadow-2xl transition-all duration-300 animate-slide-up h-full flex flex-col`} style={`animation-delay: ${index * 100}ms`}>
+                    <div class="flex items-center gap-4 mb-8">
+                        <div class={`w-14 h-14 rounded-2xl flex items-center justify-center ${category.color}`}>
+                            <category.icon size={28} />
+                        </div>
+                        <h2 class="text-2xl font-bold font-heading text-brand-dark">{category.title}</h2>
+                    </div>
+                    
+                    {category.description && (
+                        <p class="text-brand-dark/60 mb-6 italic border-l-4 border-brand-green/20 pl-4">
+                            {category.description}
+                        </p>
+                    )}
+
+                    <div class="grid gap-3">
+                        {category.links.map((link) => (
+                            <a 
+                                href={link.url} 
+                                target="_blank" 
+                                rel="noopener noreferrer"
+                                class="flex items-center justify-between p-4 rounded-xl bg-brand-light/30 hover:bg-brand-green/5 border border-transparent hover:border-brand-green/20 transition-all group"
+                            >
+                                <span class="font-medium text-brand-dark group-hover:text-brand-green transition-colors">{link.name}</span>
+                                <ExternalLink size={18} class="text-brand-dark/40 group-hover:text-brand-green transition-colors" />
+                            </a>
+                        ))}
+                    </div>
+                </div>
+            ))}
+        </div>
+        
+    </div>
+  </main>
+  <Footer />
+</Layout>
