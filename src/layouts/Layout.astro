@@ -1,6 +1,7 @@
 ---
 import { getRelativeLocaleUrl } from "astro:i18n";
 import '../styles/global.css';
+import Analytics from '@vercel/analytics/astro';
 
 interface Props {
 	title: string;
@@ -35,5 +36,6 @@ const locales = ['nl', 'en', 'de'];
 	</head>
 	<body class="bg-sand text-slate font-sans">
 		<slot />
+		<Analytics />
 	</body>
 </html>
