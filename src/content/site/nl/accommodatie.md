@@ -48,7 +48,7 @@ gallery:
     caption: "Gezellig terras op het zuiden"
 rates:
   title: "Prijslijst 2026"
-  subtitle: "Weekverhuur van zaterdag 15.00 uur tot zaterdag 10.00 uur. In 2026 stijgen de prijzen in verband met de Btw-verhoging."
+  subtitle: "Weekverhuur van zaterdag 15.00 uur tot zaterdag 10.00 uur."
   prices:
     - period: "03-01-2026 t/m 04-04-2026"
       weekPrice: "€ 510"
@@ -80,8 +80,5 @@ rates:
     - "Water"
     - "WIFI"
     - "Eindschoonmaak"
-  policies:
-    - "In verband met de huidige hoge energiekosten wordt van 1 oktober tot en met 31 mei meerverbruik van elektra en gas in rekening gebracht."
-    - "Het is niet toegestaan om elektrische en of hybride auto’s op te laden bij de woning."
-    - "Vragen? Vul het formulier in op de contactpagina."
+  policies: []
 ---

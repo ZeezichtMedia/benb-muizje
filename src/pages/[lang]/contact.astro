@@ -110,13 +110,14 @@ const t = useTranslations(currentLang);
           <!-- Form -->
           <div class="bg-white p-8 md:p-10 rounded-3xl shadow-xl border border-brand-clay/20 animate-slide-up delay-300 h-full">
                 <h3 class="text-2xl font-heading font-bold mb-6 text-brand-green">Stuur ons een bericht</h3>
-                <form name="contact" method="POST" data-netlify="true" class="space-y-6">
+                <form id="contact-form" class="space-y-6">
                     <div class="space-y-4">
                         <input type="text" name="name" placeholder={t('form.name')} required class="w-full px-4 py-3 rounded-lg bg-brand-light border-transparent focus:border-brand-green focus:bg-white focus:ring-0 transition-colors" />
                         <input type="email" name="email" placeholder={t('form.email')} required class="w-full px-4 py-3 rounded-lg bg-brand-light border-transparent focus:border-brand-green focus:bg-white focus:ring-0 transition-colors" />
                         <textarea name="message" rows="5" placeholder={t('form.message')} required class="w-full px-4 py-3 rounded-lg bg-brand-light border-transparent focus:border-brand-green focus:bg-white focus:ring-0 transition-colors"></textarea>
                     </div>
-                    <button type="submit" class="w-full bg-brand-green text-white font-bold text-lg py-4 rounded-full shadow-lg hover:bg-brand-dark hover:scale-[1.02] active:scale-95 transition-all duration-300">
+                    <div id="contact-message" class="hidden rounded-lg p-4 text-center font-bold text-sm"></div>
+                    <button type="submit" id="contact-submit" class="w-full bg-brand-green text-white font-bold text-lg py-4 rounded-full shadow-lg hover:bg-brand-dark hover:scale-[1.02] active:scale-95 transition-all duration-300">
                         {t('form.send')}
                     </button>
                 </form>
@@ -126,3 +127,56 @@ const t = useTranslations(currentLang);
   </div>
   <Footer />
 </Layout>
+
+<script define:vars={{ currentLang }}>
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.getElementById('contact-form');
+        const messageEl = document.getElementById('contact-message');
+        const submitBtn = document.getElementById('contact-submit');
+        const originalText = submitBtn?.innerText;
+
+        const messages = {
+            nl: { success: 'Bedankt! Uw bericht is verzonden. We nemen spoedig contact met u op.', error: 'Er ging iets mis. Probeer het later opnieuw of stuur een e-mail naar info@zeeuwsebuurn.nl.', sending: 'Versturen...' },
+            en: { success: 'Thank you! Your message has been sent. We will contact you as soon as possible.', error: 'Something went wrong. Please try again later or send an email to info@zeeuwsebuurn.nl.', sending: 'Sending...' },
+            de: { success: 'Vielen Dank! Ihre Nachricht wurde gesendet. Wir werden uns so schnell wie möglich bei Ihnen melden.', error: 'Etwas ist schief gelaufen. Bitte versuchen Sie es später erneut oder senden Sie eine E-Mail an info@zeeuwsebuurn.nl.', sending: 'Senden...' }
+        };
+        const msg = messages[currentLang] || messages.nl;
+
+        if (form) {
+            form.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const formData = new FormData(form);
+                const data = Object.fromEntries(formData);
+
+                if (submitBtn) { submitBtn.disabled = true; submitBtn.innerText = msg.sending; }
+                if (messageEl) messageEl.classList.add('hidden');
+
+                try {
+                    const response = await fetch('/api/contact', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(data),
+                    });
+
+                    if (response.ok) {
+                        form.reset();
+                        if (messageEl) {
+                            messageEl.innerText = msg.success;
+                            messageEl.className = 'rounded-lg p-4 text-center font-bold text-sm bg-green-100 text-green-800 border border-green-200 block';
+                        }
+                    } else {
+                        throw new Error('Submission failed');
+                    }
+                } catch (err) {
+                    console.error(err);
+                    if (messageEl) {
+                        messageEl.innerText = msg.error;
+                        messageEl.className = 'rounded-lg p-4 text-center font-bold text-sm bg-red-100 text-red-800 border border-red-200 block';
+                    }
+                } finally {
+                    if (submitBtn) { submitBtn.disabled = false; submitBtn.innerText = originalText; }
+                }
+            });
+        }
+    });
+</script>

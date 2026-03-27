@@ -5,7 +5,7 @@ hero:
   title: "By the sea...\nat Zeeuwse Buurn"
   subtitle: "A lovely 4-person holiday home within walking distance of the beach. Enjoy peace, space, and nature."
   image: "/images/home-hero.jpg"
-  ctaPrimary: "Book Now"
+  ctaPrimary: "Booking & Prices"
   ctaSecondary: "More Info"
 about:
   title: "Welcome to Zeeuwse Buurn"

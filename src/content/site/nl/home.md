@@ -5,7 +5,7 @@ hero:
   title: "Aan zee...\nbij Zeeuwse Buurn"
   subtitle: "Een heerlijke 4-persoons recreatiewoning op loopafstand van het strand. Geniet van rust, ruimte en de natuur."
   image: "/images/home-hero.jpg"
-  ctaPrimary: "Reserveringsaanvraag"
+  ctaPrimary: "Reserveren & Prijzen"
   ctaSecondary: "Meer Info"
 about:
   title: "Welkom bij Zeeuwse Buurn"

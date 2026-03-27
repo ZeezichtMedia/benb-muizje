@@ -5,7 +5,7 @@ hero:
   title: "Am Meer...\nbei Zeeuwse Buurn"
   subtitle: "Ein schönes 4-Personen-Ferienhaus nur wenige Gehminuten vom Strand entfernt. Genießen Sie Ruhe, Raum und Natur."
   image: "/images/home-hero.jpg"
-  ctaPrimary: "Jetzt Buchen"
+  ctaPrimary: "Buchen & Preise"
   ctaSecondary: "Mehr Info"
 about:
   title: "Willkommen bei Zeeuwse Buurn"
